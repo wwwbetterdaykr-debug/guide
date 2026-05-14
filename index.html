@@ -11,7 +11,6 @@
   *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
   button,a{outline:none!important;-webkit-tap-highlight-color:transparent;-webkit-touch-callout:none}
   button:focus,button:focus-visible,button:active,a:focus,a:focus-visible,a:active{outline:none!important}
-
   body{font-family:'Pretendard',-apple-system,sans-serif;background:#ffe9ec;color:#2a1a1a;min-height:100vh;padding:20px;
     background-image:radial-gradient(circle at 20% 30%,#ffc8d1 0%,transparent 40%),radial-gradient(circle at 80% 70%,#ffd4a8 0%,transparent 40%)}
   .container{max-width:640px;margin:auto;background:#fffaf5;border:3px solid #2a1a1a;border-radius:24px;padding:40px 30px;box-shadow:8px 8px 0 #2a1a1a}
@@ -24,27 +23,19 @@
   .q-num{color:#ff4d6d;font-weight:bold;font-size:14px;margin-bottom:8px;font-family:'Bagel Fat One',sans-serif;letter-spacing:1px}
   .q-text{font-family:'Black Han Sans','Jua',sans-serif;font-size:24px;margin-bottom:18px;line-height:1.35;color:#2a1a1a}
   .options{display:flex;flex-direction:column;gap:10px}
-
-  /* ===== 옵션 버튼 (기본 + selected만 정의) ===== */
   .option{background:#fff;border:2px solid #2a1a1a;border-radius:12px;padding:14px 18px;cursor:pointer;font-size:15px;text-align:left;
     transition:background .15s,color .15s,transform .15s,box-shadow .15s;font-family:inherit;color:#2a1a1a;transform:translate(0,0);box-shadow:none}
   .option.selected{background:#ff4d6d;color:#fff;transform:translate(-2px,-2px);box-shadow:4px 4px 0 #2a1a1a;border-color:#2a1a1a}
   .option:disabled{cursor:not-allowed;pointer-events:none}
-
   .progress{height:8px;background:#ffd4dc;border-radius:10px;margin-bottom:30px;overflow:hidden;border:2px solid #2a1a1a}
   .progress-bar{height:100%;background:#ff4d6d;transition:width .3s}
-
-  /* ===== 메인 버튼 ===== */
   .btn{background:#2a1a1a;color:#fff;border:none;padding:14px 28px;border-radius:12px;font-size:16px;font-weight:bold;cursor:pointer;width:100%;margin-top:10px;font-family:'Jua',sans-serif;letter-spacing:1px;transition:transform .15s,box-shadow .15s;transform:translate(0,0);box-shadow:none}
-
-  /* ===== 네비게이션 버튼 ===== */
   .nav-buttons{display:flex;gap:10px;margin-top:20px}
   .nav-btn{flex:1;padding:14px 18px;border-radius:12px;font-size:15px;font-weight:bold;cursor:pointer;font-family:'Jua',sans-serif;letter-spacing:1px;transition:transform .15s,box-shadow .15s,background .15s,color .15s;border:2px solid #2a1a1a;-webkit-appearance:none;appearance:none;transform:translate(0,0);box-shadow:none}
   .nav-btn.prev{background:#fffaf5;color:#2a1a1a;flex:0 0 38%}
   .nav-btn.next{background:#2a1a1a;color:#fff;border-color:#2a1a1a}
   .nav-btn:disabled{background:#e8d8d8!important;color:#aaa!important;border:2px solid #c8b8b8!important;cursor:not-allowed;box-shadow:none!important;transform:none!important}
 
-  /* ===== hover 효과는 진짜 마우스 환경에서만 작동 (모바일 잔상 차단) ===== */
   @media (hover:hover) and (pointer:fine){
     .option:hover:not(.selected):not(:disabled){background:#ffe9ec;transform:translate(-2px,-2px);box-shadow:4px 4px 0 #2a1a1a}
     .btn:hover{transform:translate(-2px,-2px);box-shadow:4px 4px 0 #ff4d6d}
@@ -54,13 +45,10 @@
     .detail-link:hover{transform:translate(-2px,-2px);box-shadow:4px 4px 0 #ff4d6d}
     .challenge .detail-link:hover{box-shadow:4px 4px 0 #2a1a1a}
   }
-
-  /* ===== 클릭 직후만 살짝 눌리는 효과 (잔상 X) ===== */
   .btn:active,.nav-btn:not(:disabled):active,.option:not(.selected):not(:disabled):active,.detail-link:active{
     transform:translate(0,0);box-shadow:none
   }
 
-  /* ===== 로딩 ===== */
   .loading{text-align:center;padding:40px 0}
   .loading-emoji{font-size:80px;display:inline-block;animation:bounce 1s infinite}
   @keyframes bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-15px)}}
@@ -73,17 +61,17 @@
   .dot:nth-child(3){background:#ffd4a8;animation-delay:.4s}
   @keyframes pulse{0%,100%{transform:scale(1);opacity:.5}50%{transform:scale(1.3);opacity:1}}
 
-  /* ===== 결과 카드 ===== */
   .result-main,.challenge{background:#fff;border:3px solid #2a1a1a;border-radius:16px;padding:24px;margin-bottom:20px;box-shadow:6px 6px 0 #2a1a1a}
   .challenge{background:#fff8e1;box-shadow:6px 6px 0 #ff4d6d}
   .position-image{width:100%;height:280px;background:#fff;border:3px solid #2a1a1a;border-radius:12px;overflow:hidden;box-shadow:4px 4px 0 #2a1a1a;margin-bottom:18px}
-  .position-image img{width:100%;height:100%;object-fit:cover}
+  .position-image img{width:100%;height:100%;object-fit:cover;display:block}
   .card-title-area{margin-bottom:14px}
   .result-tag{display:inline-block;background:#ff4d6d;color:#fff;padding:4px 12px;border-radius:20px;font-size:13px;font-weight:bold;margin-bottom:8px;font-family:'Jua',sans-serif;letter-spacing:1px}
   .challenge .result-tag{background:#2a1a1a}
   .card-title-area h2{font-family:'Black Han Sans','Jua',sans-serif;font-size:30px;color:#2a1a1a;line-height:1.2;margin-bottom:6px}
   .card-comment{font-size:14px;color:#8a5a5a;font-style:italic}
   .result-detail{font-size:16px;line-height:1.6;margin-bottom:14px;color:#2a1a1a}
+  .result-effect{font-size:14px;color:#8a5a5a;margin-bottom:14px;font-style:italic}
   .reason-box{background:#ffe9ec;border:2px dashed #ff4d6d;border-radius:10px;padding:14px 16px;font-size:15px;line-height:1.55;margin-bottom:16px}
   .challenge .reason-box{background:#fff;border-color:#2a1a1a}
   .reason-box strong{display:block;color:#ff4d6d;margin-bottom:6px;font-family:'Jua',sans-serif;font-size:14px;letter-spacing:.5px}
@@ -101,17 +89,15 @@
 <body>
 <div class="container">
 
-  <!-- 연령 게이트 -->
   <div id="ageGate" class="age-gate active">
     <div style="text-align:center">
       <span class="badge">19+ ONLY</span>
       <h1>[섹슐랭가이드]<br>오늘의 체위 추천</h1>
-      <p class="subtitle">파트너와 함께 답하면,<br>오늘 밤 메뉴를 추천해 드려요 🍽️</p>
-      <button class="btn" id="startBtn" onclick="startQuiz()">만 19세 이상입니다 → 시작하기</button>
+      <p class="subtitle">파트너와 함께 답하면, 오늘 밤 메뉴를 추천해 드려요 🍽️</p>
+      <button class="btn" onclick="startQuiz()">만 19세 이상입니다 → 시작하기</button>
     </div>
   </div>
 
-  <!-- 퀴즈 -->
   <div id="quiz" class="quiz">
     <div class="progress"><div class="progress-bar" id="progressBar" style="width:0%"></div></div>
     <p class="subtitle" style="margin-bottom:20px">파트너와 함께 솔직하게 답해 주세요!</p>
@@ -122,7 +108,6 @@
     </div>
   </div>
 
-  <!-- 로딩 -->
   <div id="loading" class="loading">
     <div class="loading-emoji" id="loadingEmoji">🤔</div>
     <div class="loading-title">섹슐랭 평가위원 회의 중...</div>
@@ -131,7 +116,6 @@
     <div class="dots"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>
   </div>
 
-  <!-- 결과 -->
   <div id="result" class="result">
     <div style="text-align:center;margin-bottom:24px">
       <span class="badge">추천 완료</span>
@@ -139,42 +123,37 @@
       <p class="subtitle">두 분의 답변을 바탕으로 골라봤어요.</p>
     </div>
     <div id="resultArea"></div>
-    <button class="btn" id="restartBtn" onclick="restart()">다시 추천받기 🔄</button>
+    <button class="btn" onclick="restart()">다시 추천받기 🔄</button>
   </div>
 
 </div>
 
 <script>
 const positions = [
-  {name:"시티드 라이드",detail:"남자 무릎 위에 여자가 마주 보고 앉아 서로를 깊게 껴안음",effect:"심리적 안정감 및 친밀감 극대화",link:"https://tryme.im/291",image:"https://cdn.imweb.me/upload/S20240919cd452eb478454/44d8bb076a5c8.png",tags:{mood:"포근",stim:"정서",energy:"중",lead:"균형",place:"침실",contact:"높음"}},
-  {name:"샤워 컨택",detail:"욕실에서 물의 촉감과 온도를 활용하며 마주 보는 자세",effect:"오감을 자극하는 이색적 경험",link:"https://tryme.im/288",image:"https://cdn.imweb.me/upload/S20240919cd452eb478454/7b7b9c5c73820.png",tags:{mood:"신선",stim:"신체",energy:"중",lead:"균형",place:"욕실",contact:"중간"}},
-  {name:"소파 멜팅",detail:"소파에서 휴식하다 자연스럽게 이어지는 부드러운 자세",effect:"일상 속의 로맨틱한 반전",link:"https://tryme.im/287",image:"https://cdn.imweb.me/upload/S20240919cd452eb478454/7a3aefb570913.png",tags:{mood:"포근",stim:"정서",energy:"저",lead:"균형",place:"어디든",contact:"중간"}},
-  {name:"커들 업",detail:"옆으로 누워 서로를 감싸 안고 부드럽게 결합",effect:"안락함과 깊은 친밀감",link:"https://tryme.im/286",image:"https://cdn.imweb.me/upload/S20240919cd452eb478454/9e9e7b6a4b5c2.png",tags:{mood:"포근",stim:"정서",energy:"저",lead:"균형",place:"침실",contact:"높음"}},
-  {name:"미러 게이즈",detail:"거울 앞에서 시선을 교환하며 서로의 모습을 바라봄",effect:"시각적 흥분과 자기 인식",link:"https://tryme.im/285",image:"https://cdn.imweb.me/upload/S20240919cd452eb478454/8c5b3a2e1f9d7.png",tags:{mood:"신선",stim:"시각",energy:"중",lead:"균형",place:"어디든",contact:"중간"}},
-  {name:"백 허그 슬라이드",detail:"파트너가 뒤에서 안으며 부드럽게 결합하는 자세",effect:"포근한 안정감과 보호받는 느낌",link:"https://tryme.im/284",image:"https://cdn.imweb.me/upload/S20240919cd452eb478454/5e7d8c9a4b1f2.png",tags:{mood:"포근",stim:"정서",energy:"중",lead:"파트너",place:"침실",contact:"높음"}},
-  {name:"딥 컨넥션",detail:"마주 보며 다리를 감싸 깊게 밀착하는 자세",effect:"강한 일체감과 정서적 결속",link:"https://tryme.im/283",image:"https://cdn.imweb.me/upload/S20240919cd452eb478454/3a8b9c5d2e7f1.png",tags:{mood:"명상",stim:"정서",energy:"중",lead:"균형",place:"침실",contact:"높음"}},
-  {name:"파이어 라이드",detail:"파트너 위에 올라타 강렬한 리듬으로 주도하는 자세",effect:"강한 쾌감과 주도적 흥분",link:"https://tryme.im/282",image:"https://cdn.imweb.me/upload/S20240919cd452eb478454/6c4e8f1a9b3d5.png",tags:{mood:"강렬",stim:"신체",energy:"고",lead:"내가",place:"침실",contact:"높음"}},
-  {name:"엣지 오브 베드",detail:"침대 끝에 누운 파트너를 향해 깊게 접근",effect:"각도의 변화로 새로운 자극",link:"https://tryme.im/281",image:"https://cdn.imweb.me/upload/S20240919cd452eb478454/2d9f4a7b8c1e3.png",tags:{mood:"강렬",stim:"신체",energy:"고",lead:"파트너",place:"침실",contact:"중간"}},
-  {name:"플로어 탱고",detail:"바닥에서 다리를 얽혀 강렬하게 움직이는 자세",effect:"역동적인 에너지와 자유로움",link:"https://tryme.im/280",image:"https://cdn.imweb.me/upload/S20240919cd452eb478454/7b3c9d2e5f8a1.png",tags:{mood:"강렬",stim:"신체",energy:"고",lead:"균형",place:"어디든",contact:"중간"}},
-  {name:"실루엣 댄스",detail:"조명 아래에서 시각적 실루엣을 강조한 자세",effect:"감각적인 시각 경험",link:"https://tryme.im/279",image:"https://cdn.imweb.me/upload/S20240919cd452eb478454/4a6b8c2d9e5f1.png",tags:{mood:"신선",stim:"시각",energy:"중",lead:"균형",place:"어디든",contact:"중간"}},
-  {name:"슬로우 웨이브",detail:"느리고 깊은 호흡에 맞춰 천천히 움직이는 자세",effect:"명상적 집중과 깊은 연결",link:"https://tryme.im/278",image:"https://cdn.imweb.me/upload/S20240919cd452eb478454/9e1f3a5b7c2d4.png",tags:{mood:"명상",stim:"정서",energy:"저",lead:"균형",place:"침실",contact:"높음"}},
-  {name:"체어 바운드",detail:"의자에 앉은 파트너 위에서 마주 보고 결합",effect:"안정감 있는 밀착과 시선 교환",link:"https://tryme.im/277",image:"https://cdn.imweb.me/upload/S20240919cd452eb478454/1c3d5e7f9a2b4.png",tags:{mood:"포근",stim:"정서",energy:"중",lead:"균형",place:"어디든",contact:"높음"}},
-  {name:"백 아치",detail:"등을 활처럼 휘게 만들어 깊은 각도로 결합",effect:"강렬한 신체적 자극",link:"https://tryme.im/276",image:"https://cdn.imweb.me/upload/S20240919cd452eb478454/8f2a4c6e1b3d5.png",tags:{mood:"강렬",stim:"신체",energy:"고",lead:"파트너",place:"침실",contact:"중간"}},
-  {name:"니업 클로즈",detail:"무릎을 가슴 쪽으로 당겨 깊은 각도로 결합",effect:"깊은 침투감과 일체감",link:"https://tryme.im/275",image:"https://cdn.imweb.me/upload/S20240919cd452eb478454/2b4d6f8a1c3e5.png",tags:{mood:"강렬",stim:"신체",energy:"중",lead:"파트너",place:"침실",contact:"높음"}},
-  {name:"리버스 라이드",detail:"파트너에게 등을 보이며 위에서 주도하는 자세",effect:"새로운 시각과 주도적 쾌감",link:"https://tryme.im/274",image:"https://cdn.imweb.me/upload/S20240919cd452eb478454/3c5e7a9b1d4f6.png",tags:{mood:"신선",stim:"시각",energy:"고",lead:"내가",place:"침실",contact:"중간"}},
-  {name:"탭 풀",detail:"욕조 안에서 부드럽게 결합하는 자세",effect:"물의 부력으로 가벼운 움직임",link:"https://tryme.im/273",image:"https://cdn.imweb.me/upload/S20240919cd452eb478454/4d6f8b1a3c5e7.png",tags:{mood:"신선",stim:"신체",energy:"저",lead:"균형",place:"욕실",contact:"중간"}},
-  {name:"스푼 멜트",detail:"옆으로 누워 한쪽으로 밀착해 부드럽게 움직임",effect:"피로한 날에도 부담 없는 친밀감",link:"https://tryme.im/272",image:"https://cdn.imweb.me/upload/S20240919cd452eb478454/5e7a9c2b4d6f8.png",tags:{mood:"포근",stim:"정서",energy:"저",lead:"파트너",place:"침실",contact:"높음"}},
-  {name:"브릿지 어택",detail:"파트너가 아래에서 골반을 들어 강한 각도 형성",effect:"강한 추진력과 신체적 쾌감",link:"https://tryme.im/271",image:"https://cdn.imweb.me/upload/S20240919cd452eb478454/6f8b1d3a5c7e9.png",tags:{mood:"강렬",stim:"신체",energy:"고",lead:"파트너",place:"침실",contact:"중간"}},
-  {name:"포즈 익스플로러",detail:"여러 각도를 시도하며 새로운 자세를 탐험",effect:"테크닉적 도전과 신선함",link:"https://tryme.im/270",image:"https://cdn.imweb.me/upload/S20240919cd452eb478454/7a9c2e4b6d8f1.png",tags:{mood:"신선",stim:"도전",energy:"고",lead:"균형",place:"어디든",contact:"중간"}},
-  {name:"테이블 엣지",detail:"테이블 끝에서 새로운 높이와 각도로 결합",effect:"색다른 공간감과 자극",link:"https://tryme.im/269",image:"https://cdn.imweb.me/upload/S20240919cd452eb478454/8b1d3f5a7c9e2.png",tags:{mood:"신선",stim:"도전",energy:"중",lead:"파트너",place:"어디든",contact:"중간"}},
-  {name:"롱 게이즈",detail:"천천히 움직이며 오랫동안 시선을 마주침",effect:"깊은 정서적 교감",link:"https://tryme.im/268",image:"https://cdn.imweb.me/upload/S20240919cd452eb478454/9c2e4f6b8a1d3.png",tags:{mood:"명상",stim:"정서",energy:"저",lead:"균형",place:"침실",contact:"높음"}},
-  {name:"파워 그립",detail:"강한 그립과 함께 빠르게 움직이는 자세",effect:"강렬한 몰입과 쾌감",link:"https://tryme.im/267",image:"https://cdn.imweb.me/upload/S20240919cd452eb478454/1d3e5f7b9a2c4.png",tags:{mood:"강렬",stim:"신체",energy:"고",lead:"내가",place:"침실",contact:"중간"}},
-  {name:"플로팅 클로즈",detail:"수면 가까이 떠 있는 듯 부드럽게 결합",effect:"몽환적이고 명상적인 분위기",link:"https://tryme.im/266",image:"https://cdn.imweb.me/upload/S20240919cd452eb478454/2e4f6a8b1c3d5.png",tags:{mood:"명상",stim:"정서",energy:"저",lead:"균형",place:"욕실",contact:"높음"}},
-  {name:"스탠딩 패션",detail:"서서 벽이나 가구에 기대 강하게 결합",effect:"즉흥적이고 강렬한 흥분",link:"https://tryme.im/265",image:"https://cdn.imweb.me/upload/S20240919cd452eb478454/3f5a7c9b1d4e6.png",tags:{mood:"강렬",stim:"신체",energy:"고",lead:"내가",place:"어디든",contact:"중간"}},
-  {name:"시저 트위스트",detail:"다리를 가위처럼 교차해 새로운 각도 시도",effect:"테크닉적 도전과 신선한 자극",link:"https://tryme.im/264",image:"https://cdn.imweb.me/upload/S20240919cd452eb478454/4a6b8d1c3e5f7.png",tags:{mood:"신선",stim:"도전",energy:"고",lead:"균형",place:"침실",contact:"중간"}},
-  {name:"카우치 디핑",detail:"소파 등받이에 기대 새로운 각도로 결합",effect:"편안한 자세에서 색다른 자극",link:"https://tryme.im/263",image:"https://cdn.imweb.me/upload/S20240919cd452eb478454/5b7c9e2d4f6a8.png",tags:{mood:"신선",stim:"신체",energy:"중",lead:"균형",place:"어디든",contact:"중간"}},
-  {name:"브레스 싱크",detail:"호흡을 맞춰 함께 움직이는 명상적 자세",effect:"깊은 일체감과 평온함",link:"https://tryme.im/262",image:"https://cdn.imweb.me/upload/S20240919cd452eb478454/6c8d1f3a5b7e9.png",tags:{mood:"명상",stim:"정서",energy:"저",lead:"균형",place:"침실",contact:"높음"}},
-  {name:"애플바빙",detail:"손을 쓰지 않고 오직 입과 고개의 움직임으로만 진행",effect:"테크닉적 도전과 감각의 집중",link:"https://tryme.im/227",image:"https://cdn.imweb.me/upload/S20240919cd452eb478454/6f00ebb3473e5.jpg",tags:{mood:"명상",stim:"도전",energy:"중",lead:"균형",place:"침실",contact:"중간"}}
+  {name:"시티드 라이드",detail:"남자 무릎 위에 여자가 마주 보고 앉아 서로를 깊게 껴안음",target:"정서적 유대감과 눈 맞춤을 중시하는 커플",effect:"심리적 안정감 및 친밀감 극대화",link:"https://tryme.im/291",image:"https://cdn.imweb.me/upload/S20240919cd452eb478454/44d8bb076a5c8.png",tags:{mood:"포근",stim:"정서",energy:"중",lead:"균형",place:"침실",contact:"높음"}},
+  {name:"샤워 컨택",detail:"욕실에서 물의 촉감과 온도를 활용하며 마주 보는 자세",target:"색다른 장소에서 신선함을 찾고 싶은 커플",effect:"오감을 자극하는 이색적 경험",link:"https://tryme.im/288",image:"https://cdn.imweb.me/upload/S20240919cd452eb478454/7b7b9c5c73820.png",tags:{mood:"신선",stim:"신체",energy:"중",lead:"균형",place:"욕실",contact:"중간"}},
+  {name:"소파 멜팅",detail:"소파에서 휴식하다 자연스럽게 이어지는 부드러운 자세",target:"긴장을 풀고 나른한 분위기를 즐기고 싶은 커플",effect:"일상 속의 로맨틱한 반전",link:"https://tryme.im/287",image:"https://cdn.imweb.me/upload/S20240919cd452eb478454/7a3aefb570913.png",tags:{mood:"포근",stim:"정서",energy:"저",lead:"균형",place:"어디든",contact:"중간"}},
+  {name:"불꽃놀이의 밤",detail:"마주 보고 앉아 서로의 표정과 반응을 세밀하게 관찰함",target:"파트너의 미세한 반응에 집중하고 싶은 커플",effect:"강렬한 시각적·정서적 연결",link:"https://tryme.im/286",image:"https://cdn.imweb.me/upload/S20240919cd452eb478454/c0b95c7a215e4.png",tags:{mood:"명상",stim:"시각",energy:"중",lead:"균형",place:"침실",contact:"높음"}},
+  {name:"스탠딩 백 키스",detail:"남성이 여성의 뒤에서 특정 성감대를 입과 혀로 집중 자극",target:"새로운 전희 테크닉을 시도하고 싶은 커플",effect:"전희 단계의 몰입도 향상",link:"https://tryme.im/280",image:"https://cdn.imweb.me/upload/S20240919cd452eb478454/6c0eb2ee807fe.png",tags:{mood:"신선",stim:"도전",energy:"중",lead:"파트너",place:"어디든",contact:"중간"}},
+  {name:"그림자 허그",detail:"백허그 상태에서 떨어지지 않고 밀착하여 진행하는 자세",target:"뒤에서 안아주는 포근함을 좋아하는 커플",effect:"보호받는 느낌과 안정감",link:"https://tryme.im/279",image:"https://cdn.imweb.me/upload/S20240919cd452eb478454/0686d75da24b1.png",tags:{mood:"포근",stim:"정서",energy:"저",lead:"파트너",place:"침실",contact:"높음"}},
+  {name:"레이지 69",detail:"베개를 활용해 목과 허리의 부담을 줄인 편안한 69 자세",target:"체력 소모 없이 오럴 섹스를 길게 즐기고 싶은 커플",effect:"장시간의 쾌감 유지 및 편안함",link:"https://tryme.im/274",image:"https://cdn.imweb.me/upload/S20240919cd452eb478454/31aa6ad9470ca.png",tags:{mood:"포근",stim:"신체",energy:"저",lead:"균형",place:"침실",contact:"높음"}},
+  {name:"레그업 터치",detail:"여성이 옆으로 눕고 남성이 무릎 꿇어 손으로 섬세하게 자극",target:"수동적으로 편안하게 자극받길 원하는 여성",effect:"부드럽고 섬세한 감각 탐험",link:"https://tryme.im/273",image:"https://cdn.imweb.me/upload/S20240919cd452eb478454/4c8bbaff0d132.png",tags:{mood:"포근",stim:"신체",energy:"저",lead:"파트너",place:"침실",contact:"중간"}},
+  {name:"리버스 오럴",detail:"남성이 엎드린 상태에서 여성이 뒤에서 리드하는 방식",target:"남성이 새로운 각도와 시야에서 자극받고 싶을 때",effect:"주도권 변화를 통한 색다른 자극",link:"https://tryme.im/272",image:"https://cdn.imweb.me/upload/S20240919cd452eb478454/ceb3776e4e65f.png",tags:{mood:"신선",stim:"도전",energy:"중",lead:"내가",place:"침실",contact:"중간"}},
+  {name:"그립 잇 굿",detail:"정상위에서 다리 각도를 조절해 삽입 깊이를 최대화함",target:"깊은 삽입과 압박감을 선호하는 커플",effect:"지스팟 자극 및 강한 물리적 쾌감",link:"https://tryme.im/271",image:"https://cdn.imweb.me/upload/S20240919cd452eb478454/8fd2ea690019b.png",tags:{mood:"강렬",stim:"신체",energy:"고",lead:"파트너",place:"침실",contact:"높음"}},
+  {name:"커들 업",detail:"뒤에서 안은 채 진행하는 나른하고 에너지가 적게 드는 자세",target:"수면 전후나 몸이 지친 날 사랑을 확인하고픈 커플",effect:"포근하고 부드러운 교감",link:"https://tryme.im/270",image:"https://cdn.imweb.me/upload/S20240919cd452eb478454/7dc91245a69bb.png",tags:{mood:"포근",stim:"정서",energy:"저",lead:"파트너",place:"침실",contact:"높음"}},
+  {name:"리버레이티드 러버",detail:"여성 상위에서 상체를 뒤로 젖혀 시야와 가동 범위를 확장",target:"여성이 주도권을 갖고 해방감을 느끼고 싶은 경우",effect:"시각적 즐거움과 주도적 쾌감",link:"https://tryme.im/265",image:"https://cdn.imweb.me/upload/S20240919cd452eb478454/4e0ed8dbf2611.png",tags:{mood:"강렬",stim:"시각",energy:"고",lead:"내가",place:"침실",contact:"중간"}},
+  {name:"사이들 업",detail:"침대 끝을 활용해 신체 부담을 줄이며 진행하는 오럴 자세",target:"목/허리 통증 없이 오럴에만 집중하고 싶은 커플",effect:"기능적 편안함과 집중도 향상",link:"https://tryme.im/263",image:"https://cdn.imweb.me/upload/S20240919cd452eb478454/ffc2112a2a5c8.png",tags:{mood:"포근",stim:"신체",energy:"저",lead:"균형",place:"침실",contact:"중간"}},
+  {name:"더블 트러블",detail:"거울 앞에서 진행하며 파트너와 자신의 모습을 실시간 확인",target:"시각적 자극이나 관음적 재미를 추구하는 커플",effect:"강렬한 시각적 흥분",link:"https://tryme.im/255",image:"https://cdn.imweb.me/upload/S20240919cd452eb478454/a4e5bedd782ad.png",tags:{mood:"신선",stim:"시각",energy:"중",lead:"균형",place:"어디든",contact:"중간"}},
+  {name:"엘리베이터",detail:"서서 높낮이를 조절하며 진행하는 스릴 있는 수직 체위",target:"짧고 강렬한 자극이나 장소의 스릴을 즐기는 커플",effect:"긴장감 넘치는 스릴과 강한 자극",link:"https://tryme.im/253",image:"https://cdn.imweb.me/upload/S20240919cd452eb478454/badf0b8d2056b.png",tags:{mood:"강렬",stim:"도전",energy:"고",lead:"내가",place:"어디든",contact:"중간"}},
+  {name:"투 디 엣지",detail:"침대 모서리에서 중력을 이용해 각도를 깊게 만드는 자세",target:"평소와 다른 깊은 자극과 해방감을 원하는 커플",effect:"강한 중력 자극과 물리적 쾌감",link:"https://tryme.im/252",image:"https://cdn.imweb.me/upload/S20240919cd452eb478454/009f841f8e2f4.png",tags:{mood:"강렬",stim:"신체",energy:"고",lead:"파트너",place:"침실",contact:"중간"}},
+  {name:"스티미 쉬미",detail:"욕조 안에서 물의 부력과 온도를 이용해 밀착하는 자세",target:"신체 이완과 로맨틱한 분위기를 동시에 원하는 커플",effect:"신체 이완 및 이색적 무드",link:"https://tryme.im/249",image:"https://cdn.imweb.me/upload/S20240919cd452eb478454/1263d5cda6820.png",tags:{mood:"포근",stim:"정서",energy:"저",lead:"균형",place:"욕실",contact:"높음"}},
+  {name:"크로스드 러버",detail:"다리를 꼬아 마찰 면적과 내부 압박력을 극대화하는 자세",target:"꽉 찬 느낌과 강한 마찰을 선호하는 커플",effect:"밀도 높은 마찰 쾌감",link:"https://tryme.im/246",image:"https://cdn.imweb.me/upload/S20240919cd452eb478454/03cab30726d2b.png",tags:{mood:"강렬",stim:"신체",energy:"중",lead:"균형",place:"침실",contact:"높음"}},
+  {name:"스탠드 투 어텐션",detail:"서로를 온전히 지탱하며 서서 체온을 나누는 밀착 자세",target:"강한 신체 접촉과 에너지를 나누고 싶은 커플",effect:"역동적인 에너지와 밀착감",link:"https://tryme.im/244",image:"https://cdn.imweb.me/upload/S20240919cd452eb478454/679a1a6d500f2.png",tags:{mood:"강렬",stim:"신체",energy:"고",lead:"균형",place:"어디든",contact:"높음"}},
+  {name:"테이스트 오브 탄트라",detail:"호흡을 맞추며 상대방을 온전히 받아들이는 명상적 자세",target:"육체 너머 정신적 연결과 깊은 수용을 원하는 커플",effect:"정신적 몰입과 깊은 충만감",link:"https://tryme.im/239",image:"https://cdn.imweb.me/upload/S20240919cd452eb478454/0a0b55fd2bfcc.png",tags:{mood:"명상",stim:"정서",energy:"저",lead:"균형",place:"침실",contact:"높음"}},
+  {name:"하드프레스",detail:"남성이 전신 무게로 강하게 압박하며 누르는 자세",target:"무게감과 지배적인 압력 자극을 선호하는 커플",effect:"강한 압박 쾌감과 정복감",link:"https://tryme.im/237",image:"https://cdn.imweb.me/upload/S20240919cd452eb478454/e3020b89f1c2b.png",tags:{mood:"강렬",stim:"신체",energy:"고",lead:"파트너",place:"침실",contact:"높음"}},
+  {name:"미션어리",detail:"남성이 위에서 부드럽게 감싸 안는 안정적인 정상위",target:"처음 관계를 시작하거나 전신 체온을 느끼고픈 커플",effect:"보편적인 안정감과 따뜻함",link:"https://tryme.im/233",image:"https://cdn.imweb.me/upload/S20240919cd452eb478454/c75c615004929.png",tags:{mood:"포근",stim:"정서",energy:"중",lead:"파트너",place:"침실",contact:"높음"}},
+  {name:"더 낫(The Knot)",detail:"다리로 파트너를 감싸 매듭처럼 고정하여 밀착도 극대화",target:"관계 중 절대 떨어지고 싶지 않은 강한 애착 커플",effect:"극한의 밀착과 결속감",link:"https://tryme.im/230",image:"https://cdn.imweb.me/upload/S20240919cd452eb478454/f13ce523fe86d.png",tags:{mood:"명상",stim:"정서",energy:"중",lead:"균형",place:"침실",contact:"높음"}},
+  {name:"애플바빙",detail:"손을 쓰지 않고 오직 입과 고개의 움직임으로만 진행",target:"입술과 입 안의 감각에만 온전히 집중하고 싶은 커플",effect:"테크닉적 도전과 감각의 집중",link:"https://tryme.im/227",image:"https://cdn.imweb.me/upload/S20240919cd452eb478454/6f00ebb3473e5.jpg",tags:{mood:"명상",stim:"도전",energy:"중",lead:"균형",place:"침실",contact:"중간"}}
 ];
 
 const questions = [
@@ -237,12 +216,10 @@ const moodComments = {
 
 let currentQ = 0, answers = {};
 
-// ===== 화면 전환 시 모든 포커스/잔상 제거 =====
 function clearFocus(){
   if(document.activeElement && document.activeElement.blur){
     document.activeElement.blur();
   }
-  // 모바일 Safari/Chrome의 hover sticky 문제 해결을 위한 강제 리플로우
   document.body.style.pointerEvents = 'none';
   requestAnimationFrame(()=>{
     document.body.style.pointerEvents = '';
@@ -367,7 +344,7 @@ function showResult(){
   document.getElementById('result').classList.add('active');
   const scored = calculateScores();
   const top = scored[0];
-  const pool = scored.slice(-8).filter(p=>p.name !== top.name);
+  const pool = scored.slice(-10).filter(p=>p.name !== top.name);
   const challenge = pool[Math.floor(Math.random()*pool.length)];
   const comment = moodComments[answers.mood] || "오늘도 두 분 평화로운 밤 되세요.";
   document.getElementById('resultArea').innerHTML = `
@@ -379,7 +356,8 @@ function showResult(){
         <p class="card-comment">${comment}</p>
       </div>
       <p class="result-detail">${top.detail}</p>
-      <div class="reason-box"><strong>👉 왜 두분에게 이걸 추천하냐면요</strong>${buildRecommendReason(top)}</div>
+      <p class="result-effect">✨ ${top.effect}</p>
+      <div class="reason-box"><strong>👉 왜 두 분에게 이걸 추천하냐면요</strong>${buildRecommendReason(top)}</div>
       <a href="${top.link}" target="_blank" rel="noopener" class="detail-link">📖 자세히 보러 가기 →</a>
     </div>
     <div class="challenge">
@@ -390,6 +368,7 @@ function showResult(){
         <p class="card-comment">안전지대 밖에서 만나는 색다른 자극.</p>
       </div>
       <p class="result-detail">${challenge.detail}</p>
+      <p class="result-effect">✨ ${challenge.effect}</p>
       <div class="reason-box"><strong>👉 우리가 왜 도전해 볼 만하냐면요</strong>${buildChallengeReason(challenge)}</div>
       <a href="${challenge.link}" target="_blank" rel="noopener" class="detail-link">📖 자세히 보러 가기 →</a>
     </div>`;
