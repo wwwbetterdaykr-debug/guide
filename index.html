@@ -3,407 +3,103 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>[섹슐랭가이드]나에게 맞는 체위 찾기</title>
+<title>[섹슐랭가이드] 나에게 맞는 체위 찾기</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Bagel+Fat+One&family=Jua&display=swap" rel="stylesheet">
 <style>
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-  body {
-    font-family: 'Pretendard', -apple-system, sans-serif;
-    background: #ffe9ec;
-    color: #2a1a1a;
-    min-height: 100vh;
-    padding: 20px;
-    background-image:
-      radial-gradient(circle at 20% 30%, #ffc8d1 0%, transparent 40%),
-      radial-gradient(circle at 80% 70%, #ffd4a8 0%, transparent 40%);
-  }
-  .container {
-    max-width: 640px;
-    margin: 0 auto;
-    background: #fffaf5;
-    border: 3px solid #2a1a1a;
-    border-radius: 24px;
-    padding: 40px 30px;
-    box-shadow: 8px 8px 0 #2a1a1a;
-  }
-
-  h1 {
-    font-family: 'Black Han Sans', 'Jua', sans-serif;
-    font-size: 36px;
-    text-align: center;
-    margin-bottom: 8px;
-    letter-spacing: -0.5px;
-    line-height: 1.15;
-    color: #2a1a1a;
-    text-shadow: 3px 3px 0 #ffc8d1;
-    transform: rotate(-1deg);
-  }
-  .subtitle {
-    text-align: center;
-    color: #8a5a5a;
-    margin-bottom: 30px;
-    font-size: 14px;
-  }
-  .badge {
-    display: inline-block;
-    background: #ff4d6d;
-    color: #fff;
-    padding: 5px 14px;
-    border-radius: 20px;
-    font-size: 13px;
-    font-weight: bold;
-    margin-bottom: 16px;
-    transform: rotate(-2deg);
-    font-family: 'Jua', sans-serif;
-    letter-spacing: 1px;
-  }
-  .age-gate, .quiz, .result, .loading { display: none; }
-  .active { display: block; }
-  .question { margin-bottom: 24px; }
-  .q-num {
-    color: #ff4d6d;
-    font-weight: bold;
-    font-size: 14px;
-    margin-bottom: 8px;
-    font-family: 'Bagel Fat One', sans-serif;
-    letter-spacing: 1px;
-  }
-  .q-text {
-    font-family: 'Black Han Sans', 'Jua', sans-serif;
-    font-size: 24px;
-    margin-bottom: 18px;
-    line-height: 1.35;
-    color: #2a1a1a;
-  }
-  .options { display: flex; flex-direction: column; gap: 10px; }
-
-  /* ============ 옵션 스타일 (잔상 제거) ============ */
-  .option {
-    background: #fff;
-    border: 2px solid #2a1a1a;
-    border-radius: 12px;
-    padding: 14px 18px;
-    cursor: pointer;
-    font-size: 15px;
-    text-align: left;
-    transition: background 0.15s, color 0.15s, transform 0.15s, box-shadow 0.15s;
-    font-family: inherit;
-    color: #2a1a1a;
-    transform: translate(0, 0);
-    box-shadow: none;
-  }
-  .option:hover:not(.selected):not(:disabled) {
-    background: #ffe9ec;
-    transform: translate(-2px, -2px);
-    box-shadow: 4px 4px 0 #2a1a1a;
-  }
-  .option.selected {
-    background: #ff4d6d;
-    color: #fff;
-    transform: translate(-2px, -2px);
-    box-shadow: 4px 4px 0 #2a1a1a;
-  }
-  /* 잔상 방지: 비활성 상태에서는 hover 효과 모두 차단 */
-  .option:disabled {
-    cursor: not-allowed;
-    pointer-events: none;
-  }
-  .option:disabled:not(.selected) {
-    background: #fff;
-    color: #2a1a1a;
-    transform: translate(0, 0);
-    box-shadow: none;
-  }
-
-  .progress {
-    height: 8px;
-    background: #ffd4dc;
-    border-radius: 10px;
-    margin-bottom: 30px;
-    overflow: hidden;
-    border: 2px solid #2a1a1a;
-  }
-  .progress-bar {
-    height: 100%;
-    background: #ff4d6d;
-    transition: width 0.3s;
-  }
-  .btn {
-    background: #2a1a1a;
-    color: #fff;
-    border: none;
-    padding: 14px 28px;
-    border-radius: 12px;
-    font-size: 16px;
-    font-weight: bold;
-    cursor: pointer;
-    width: 100%;
-    margin-top: 10px;
-    font-family: 'Jua', sans-serif;
-    letter-spacing: 1px;
-    transition: all 0.15s;
-  }
-  .btn:hover {
-    transform: translate(-2px, -2px);
-    box-shadow: 4px 4px 0 #ff4d6d;
-  }
-
-  /* ============ 이전/다음 네비게이션 버튼 ============ */
-  .nav-buttons {
-    display: flex;
-    gap: 10px;
-    margin-top: 20px;
-  }
-  .nav-btn {
-    flex: 1;
-    padding: 14px 18px;
-    border-radius: 12px;
-    font-size: 15px;
-    font-weight: bold;
-    cursor: pointer;
-    font-family: 'Jua', sans-serif;
-    letter-spacing: 1px;
-    transition: all 0.15s;
-    border: 2px solid #2a1a1a;
-  }
-  .nav-btn.prev {
-    background: #fffaf5;
-    color: #2a1a1a;
-    flex: 0 0 38%;
-  }
-  .nav-btn.next {
-    background: #2a1a1a;
-    color: #fff;
-  }
-  .nav-btn:not(:disabled):hover {
-    transform: translate(-2px, -2px);
-    box-shadow: 4px 4px 0 #ff4d6d;
-  }
-  .nav-btn.prev:not(:disabled):hover {
-    box-shadow: 4px 4px 0 #2a1a1a;
-  }
-  .nav-btn:disabled {
-    background: #e8d8d8;
-    color: #aaa;
-    border-color: #c8b8b8;
-    cursor: not-allowed;
-    box-shadow: none;
-    transform: none;
-  }
-
-  /* 로딩 */
-  .loading { text-align: center; padding: 30px 0 10px; }
-  .loading-emoji {
-    font-size: 64px;
-    margin-bottom: 24px;
-    display: inline-block;
-    animation: bounce 0.9s ease-in-out infinite;
-  }
-  @keyframes bounce {
-    0%, 100% { transform: translateY(0) rotate(-5deg); }
-    50% { transform: translateY(-18px) rotate(5deg); }
-  }
-  .loading-title {
-    font-family: 'Black Han Sans', 'Jua', sans-serif;
-    font-size: 32px;
-    color: #2a1a1a;
-    margin-bottom: 16px;
-    text-shadow: 3px 3px 0 #ffc8d1;
-    transform: rotate(-1deg);
-  }
-  .loading-message {
-    font-family: 'Jua', sans-serif;
-    font-size: 19px;
-    color: #ff4d6d;
-    margin-bottom: 30px;
-    min-height: 28px;
-    transition: opacity 0.3s;
-    letter-spacing: 0.5px;
-  }
-  .loading-dots {
-    display: flex;
-    justify-content: center;
-    gap: 12px;
-    margin-bottom: 20px;
-  }
-  .loading-dot {
-    width: 16px;
-    height: 16px;
-    background: #ff4d6d;
-    border: 2px solid #2a1a1a;
-    border-radius: 50%;
-    animation: dotPulse 1.2s ease-in-out infinite;
-  }
-  .loading-dot:nth-child(2) { animation-delay: 0.2s; background: #ffd4a8; }
-  .loading-dot:nth-child(3) { animation-delay: 0.4s; background: #2a1a1a; }
-  @keyframes dotPulse {
-    0%, 100% { transform: scale(0.6); opacity: 0.5; }
-    50% { transform: scale(1.2); opacity: 1; }
-  }
-  .loading-funny {
-    font-size: 13px;
-    color: #8a5a5a;
-    font-style: italic;
-    margin-top: 14px;
-  }
-
-  /* ============ 결과 카드 ============ */
-  .result-main {
-    background: #ff4d6d;
-    color: #fff;
-    border: 3px solid #2a1a1a;
-    border-radius: 16px;
-    padding: 22px;
-    margin-bottom: 24px;
-    box-shadow: 6px 6px 0 #2a1a1a;
-    transform: rotate(-1deg);
-  }
-  .challenge {
-    background: #ffd4a8;
-    border: 3px dashed #2a1a1a;
-    border-radius: 16px;
-    padding: 22px;
-    transform: rotate(1deg);
-  }
-
-  .position-image {
-    width: 100%;
-    height: 280px;
-    background: #fff;
-    border: 3px solid #2a1a1a;
-    border-radius: 12px;
-    overflow: hidden;
-    box-shadow: 4px 4px 0 #2a1a1a;
-    margin-bottom: 18px;
-  }
-  .position-image img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
-  }
-
-  .card-title-area { margin-bottom: 16px; }
-  .result-tag {
-    font-family: 'Jua', sans-serif;
-    font-size: 13px;
-    background: #fffaf5;
-    color: #2a1a1a;
-    display: inline-block;
-    padding: 5px 12px;
-    border-radius: 12px;
-    margin-bottom: 10px;
-    letter-spacing: 0.5px;
-  }
-  .challenge .result-tag { background: #2a1a1a; color: #ffd4a8; }
-  .card-title-area h2 {
-    font-family: 'Black Han Sans', 'Jua', sans-serif;
-    font-size: 32px;
-    line-height: 1.15;
-    margin-bottom: 8px;
-    letter-spacing: -0.5px;
-  }
-  .card-comment {
-    font-size: 14px;
-    opacity: 0.95;
-    font-style: italic;
-    line-height: 1.55;
-  }
-  .result-detail {
-    font-size: 16px;
-    line-height: 1.75;
-    margin-top: 4px;
-    font-weight: 500;
-  }
-  .reason-box {
-    background: rgba(255,250,245,0.95);
-    color: #2a1a1a;
-    border-radius: 12px;
-    padding: 18px;
-    margin-top: 16px;
-    font-size: 15px;
-    line-height: 1.8;
-  }
-  .reason-box strong {
-    font-family: 'Jua', sans-serif;
-    color: #ff4d6d;
-    display: block;
-    margin-bottom: 8px;
-    font-size: 14px;
-    letter-spacing: 0.3px;
-  }
-  .challenge .reason-box {
-    background: #fff;
-    border: 2px solid #2a1a1a;
-  }
-  .detail-link {
-    display: block;
-    text-align: center;
-    background: #2a1a1a;
-    color: #fff !important;
-    text-decoration: none;
-    padding: 13px;
-    border-radius: 10px;
-    font-weight: bold;
-    font-size: 14px;
-    margin-top: 16px;
-    transition: all 0.15s;
-    border: 2px solid #2a1a1a;
-    font-family: 'Jua', sans-serif;
-    letter-spacing: 0.5px;
-  }
-  .result-main .detail-link {
-    background: #fffaf5;
-    color: #ff4d6d !important;
-    border-color: #fffaf5;
-  }
-  .detail-link:hover {
-    transform: translate(-2px, -2px);
-    box-shadow: 4px 4px 0 #2a1a1a;
-  }
-  .result-main .detail-link:hover {
-    box-shadow: 4px 4px 0 #fffaf5;
-  }
-  .header-deco {
-    text-align: center;
-    font-size: 40px;
-    margin-bottom: 10px;
-  }
-
-  @media (max-width: 480px) {
-    h1 { font-size: 30px; }
-    .q-text { font-size: 21px; }
-    .position-image { height: 220px; }
-    .card-title-area h2 { font-size: 26px; }
-    .result-detail { font-size: 15px; }
-    .reason-box { font-size: 14px; }
-    .loading-title { font-size: 26px; }
-    .loading-message { font-size: 16px; }
-    .nav-btn { font-size: 14px; padding: 12px 14px; }
+  *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  button{outline:none!important;-webkit-tap-highlight-color:transparent}
+  button:focus,button:focus-visible,button:active{outline:none!important}
+  body{font-family:'Pretendard',-apple-system,sans-serif;background:#ffe9ec;color:#2a1a1a;min-height:100vh;padding:20px;
+    background-image:radial-gradient(circle at 20% 30%,#ffc8d1 0%,transparent 40%),radial-gradient(circle at 80% 70%,#ffd4a8 0%,transparent 40%)}
+  .container{max-width:640px;margin:auto;background:#fffaf5;border:3px solid #2a1a1a;border-radius:24px;padding:40px 30px;box-shadow:8px 8px 0 #2a1a1a}
+  h1{font-family:'Black Han Sans','Jua',sans-serif;font-size:36px;text-align:center;margin-bottom:8px;letter-spacing:-0.5px;line-height:1.15;color:#2a1a1a;text-shadow:3px 3px 0 #ffc8d1;transform:rotate(-1deg)}
+  .subtitle{text-align:center;color:#8a5a5a;margin-bottom:30px;font-size:14px}
+  .badge{display:inline-block;background:#ff4d6d;color:#fff;padding:5px 14px;border-radius:20px;font-size:13px;font-weight:bold;margin-bottom:16px;transform:rotate(-2deg);font-family:'Jua',sans-serif;letter-spacing:1px}
+  .age-gate,.quiz,.result,.loading{display:none}
+  .active{display:block}
+  .question{margin-bottom:24px}
+  .q-num{color:#ff4d6d;font-weight:bold;font-size:14px;margin-bottom:8px;font-family:'Bagel Fat One',sans-serif;letter-spacing:1px}
+  .q-text{font-family:'Black Han Sans','Jua',sans-serif;font-size:24px;margin-bottom:18px;line-height:1.35;color:#2a1a1a}
+  .options{display:flex;flex-direction:column;gap:10px}
+  .option{background:#fff;border:2px solid #2a1a1a;border-radius:12px;padding:14px 18px;cursor:pointer;font-size:15px;text-align:left;
+    transition:background .15s,color .15s,transform .15s,box-shadow .15s;font-family:inherit;color:#2a1a1a;transform:translate(0,0);box-shadow:none;outline:none}
+  .option:hover:not(.selected):not(:disabled){background:#ffe9ec;transform:translate(-2px,-2px);box-shadow:4px 4px 0 #2a1a1a}
+  .option.selected{background:#ff4d6d;color:#fff;transform:translate(-2px,-2px);box-shadow:4px 4px 0 #2a1a1a;border-color:#2a1a1a}
+  .option:focus,.option:focus-visible,.option:active{outline:none!important}
+  .option.selected:focus,.option.selected:focus-visible{box-shadow:4px 4px 0 #2a1a1a!important}
+  .option:disabled{cursor:not-allowed;pointer-events:none}
+  .option:disabled:not(.selected){background:#fff;color:#2a1a1a;transform:translate(0,0);box-shadow:none}
+  .progress{height:8px;background:#ffd4dc;border-radius:10px;margin-bottom:30px;overflow:hidden;border:2px solid #2a1a1a}
+  .progress-bar{height:100%;background:#ff4d6d;transition:width .3s}
+  .btn{background:#2a1a1a;color:#fff;border:none;padding:14px 28px;border-radius:12px;font-size:16px;font-weight:bold;cursor:pointer;width:100%;margin-top:10px;font-family:'Jua',sans-serif;letter-spacing:1px;transition:all .15s;outline:none}
+  .btn:hover{transform:translate(-2px,-2px);box-shadow:4px 4px 0 #ff4d6d}
+  .btn:focus,.btn:focus-visible,.btn:active{outline:none!important}
+  .nav-buttons{display:flex;gap:10px;margin-top:20px}
+  .nav-btn{flex:1;padding:14px 18px;border-radius:12px;font-size:15px;font-weight:bold;cursor:pointer;font-family:'Jua',sans-serif;letter-spacing:1px;transition:transform .15s,box-shadow .15s,background .15s,color .15s;border:2px solid #2a1a1a;outline:none;-webkit-appearance:none;appearance:none}
+  .nav-btn.prev{background:#fffaf5;color:#2a1a1a;flex:0 0 38%}
+  .nav-btn.next{background:#2a1a1a;color:#fff;border-color:#2a1a1a}
+  .nav-btn:focus,.nav-btn:focus-visible,.nav-btn:active{outline:none!important}
+  .nav-btn.next:focus,.nav-btn.next:focus-visible,.nav-btn.next:active{border:2px solid #2a1a1a!important;background:#2a1a1a;color:#fff}
+  .nav-btn.prev:focus,.nav-btn.prev:focus-visible,.nav-btn.prev:active{border:2px solid #2a1a1a!important;background:#fffaf5;color:#2a1a1a}
+  .nav-btn:not(:disabled):hover{transform:translate(-2px,-2px)}
+  .nav-btn.next:not(:disabled):hover{box-shadow:4px 4px 0 #ff4d6d}
+  .nav-btn.prev:not(:disabled):hover{box-shadow:4px 4px 0 #2a1a1a}
+  .nav-btn:disabled{background:#e8d8d8!important;color:#aaa!important;border:2px solid #c8b8b8!important;cursor:not-allowed;box-shadow:none;transform:none}
+  .loading{text-align:center;padding:40px 0}
+  .loading-emoji{font-size:80px;display:inline-block;animation:bounce 1s infinite}
+  @keyframes bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-15px)}}
+  .loading-title{font-family:'Black Han Sans','Jua',sans-serif;font-size:30px;margin:20px 0 10px;color:#2a1a1a}
+  .loading-message{font-size:18px;color:#8a5a5a;margin-bottom:12px;transition:opacity .2s;font-family:'Jua',sans-serif}
+  .loading-funny{font-size:14px;color:#ff4d6d;font-style:italic;transition:opacity .2s}
+  .dots{display:inline-flex;gap:6px;margin-top:20px}
+  .dot{width:10px;height:10px;border-radius:50%;background:#ff4d6d;animation:pulse 1.4s infinite}
+  .dot:nth-child(2){background:#ffc8d1;animation-delay:.2s}
+  .dot:nth-child(3){background:#ffd4a8;animation-delay:.4s}
+  @keyframes pulse{0%,100%{transform:scale(1);opacity:.5}50%{transform:scale(1.3);opacity:1}}
+  .result-main,.challenge{background:#fff;border:3px solid #2a1a1a;border-radius:16px;padding:24px;margin-bottom:20px;box-shadow:6px 6px 0 #2a1a1a}
+  .challenge{background:#fff8e1;box-shadow:6px 6px 0 #ff4d6d}
+  .position-image{width:100%;height:280px;background:#fff;border:3px solid #2a1a1a;border-radius:12px;overflow:hidden;box-shadow:4px 4px 0 #2a1a1a;margin-bottom:18px}
+  .position-image img{width:100%;height:100%;object-fit:cover}
+  .card-title-area{margin-bottom:14px}
+  .result-tag{display:inline-block;background:#ff4d6d;color:#fff;padding:4px 12px;border-radius:20px;font-size:13px;font-weight:bold;margin-bottom:8px;font-family:'Jua',sans-serif;letter-spacing:1px}
+  .challenge .result-tag{background:#2a1a1a}
+  .card-title-area h2{font-family:'Black Han Sans','Jua',sans-serif;font-size:30px;color:#2a1a1a;line-height:1.2;margin-bottom:6px}
+  .card-comment{font-size:14px;color:#8a5a5a;font-style:italic}
+  .result-detail{font-size:16px;line-height:1.6;margin-bottom:14px;color:#2a1a1a}
+  .reason-box{background:#ffe9ec;border:2px dashed #ff4d6d;border-radius:10px;padding:14px 16px;font-size:15px;line-height:1.55;margin-bottom:16px}
+  .challenge .reason-box{background:#fff;border-color:#2a1a1a}
+  .reason-box strong{display:block;color:#ff4d6d;margin-bottom:6px;font-family:'Jua',sans-serif;font-size:14px;letter-spacing:.5px}
+  .challenge .reason-box strong{color:#2a1a1a}
+  .detail-link{display:inline-block;background:#2a1a1a;color:#fff;padding:10px 18px;border-radius:10px;text-decoration:none;font-weight:bold;font-size:14px;font-family:'Jua',sans-serif;letter-spacing:1px;transition:all .15s}
+  .detail-link:hover{transform:translate(-2px,-2px);box-shadow:4px 4px 0 #ff4d6d}
+  .challenge .detail-link{background:#ff4d6d}
+  .challenge .detail-link:hover{box-shadow:4px 4px 0 #2a1a1a}
+  @media(max-width:480px){
+    h1{font-size:30px}.q-text{font-size:21px}.position-image{height:220px}
+    .card-title-area h2{font-size:26px}.result-detail{font-size:15px}.reason-box{font-size:14px}
+    .loading-title{font-size:26px}.loading-message{font-size:16px}.nav-btn{font-size:14px;padding:12px 14px}
   }
 </style>
 </head>
 <body>
-
 <div class="container">
 
   <!-- 연령 게이트 -->
   <div id="ageGate" class="age-gate active">
-    <div class="header-deco">🔞</div>
-    <h1>잠깐, 멈춰!</h1>
-    <p class="subtitle">이 사이트는 19세 이상만 입장 가능합니다.<br>당신, 진짜 어른 맞아요?</p>
-    <button class="btn" onclick="startQuiz()">네, 저 어른이에요</button>
-    <button class="btn" style="background:#ccc;color:#2a1a1a;margin-top:10px;" onclick="alert('잘 가요. 시간이 약이에요. 🌱')">아직 아닌데요...</button>
+    <div style="text-align:center">
+      <span class="badge">19+ ONLY</span>
+      <h1>[섹슐랭가이드]<br>오늘 밤을 위한 체위 찾기</h1>
+      <p class="subtitle">파트너와 함께 답하면, 오늘 밤 메뉴를 추천해 드려요 🍽️</p>
+      <button class="btn" onclick="startQuiz()">만 19세 이상입니다 → 시작하기</button>
+    </div>
   </div>
 
   <!-- 퀴즈 -->
   <div id="quiz" class="quiz">
-    <span class="badge">오늘의 추천</span>
-    <h1>당신에게 딱 맞는 체위는?</h1>
-    <p class="subtitle">솔직하게 답변해 주세요!</p>
     <div class="progress"><div class="progress-bar" id="progressBar" style="width:0%"></div></div>
+    <p class="subtitle" style="margin-bottom:20px">파트너와 함께 솔직하게 답해 주세요!</p>
     <div id="questionArea"></div>
     <div class="nav-buttons">
       <button class="nav-btn prev" id="prevBtn" onclick="prevQuestion()">← 이전</button>
@@ -414,390 +110,273 @@
   <!-- 로딩 -->
   <div id="loading" class="loading">
     <div class="loading-emoji" id="loadingEmoji">🤔</div>
-    <div class="loading-title">고민 중...</div>
-    <div class="loading-message" id="loadingMessage">당신의 답변을 살펴보는 중...</div>
-    <div class="loading-dots">
-      <div class="loading-dot"></div>
-      <div class="loading-dot"></div>
-      <div class="loading-dot"></div>
-    </div>
-    <p class="loading-funny" id="loadingFunny">진지하게 골라드릴게요. 진짜로.</p>
+    <div class="loading-title">섹슐랭 평가위원 회의 중...</div>
+    <div class="loading-message" id="loadingMessage">두 분의 답변을 살펴보는 중...</div>
+    <div class="loading-funny" id="loadingFunny">흠... 흠...</div>
+    <div class="dots"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>
   </div>
 
   <!-- 결과 -->
   <div id="result" class="result">
-    <span class="badge">추천 완료</span>
-    <h1>당신을 위한 오늘의 추천</h1>
-    <p class="subtitle">당신의 답변을 바탕으로 골라봤어요.</p>
+    <div style="text-align:center;margin-bottom:24px">
+      <span class="badge">추천 완료</span>
+      <h1>두 분을 위한<br>오늘의 추천</h1>
+      <p class="subtitle">두 분의 답변을 바탕으로 골라봤어요.</p>
+    </div>
     <div id="resultArea"></div>
-    <button class="btn" onclick="restart()">🔄 다시 추천받기</button>
+    <button class="btn" onclick="restart()">다시 추천받기 🔄</button>
   </div>
 
 </div>
 
 <script>
 const positions = [
-  { name:"시티드 라이드", detail:"남자 무릎 위에 여자가 마주 보고 앉아 서로를 깊게 껴안음", effect:"심리적 안정감 및 친밀감 극대화",
-    link:"https://tryme.im/291", image:"https://cdn.imweb.me/upload/S20240919cd452eb478454/44d8bb076a5c8.png",
-    tags:{mood:"포근",stim:"정서",energy:"중",lead:"균형",place:"침실",contact:"높음"} },
-  { name:"샤워 컨택", detail:"욕실에서 물의 촉감과 온도를 활용하며 마주 보는 자세", effect:"오감을 자극하는 이색적 경험",
-    link:"https://tryme.im/288", image:"https://cdn.imweb.me/upload/S20240919cd452eb478454/7b7b9c5c73820.png",
-    tags:{mood:"신선",stim:"신체",energy:"중",lead:"균형",place:"욕실",contact:"중간"} },
-  { name:"소파 멜팅", detail:"소파에서 휴식하다 자연스럽게 이어지는 부드러운 자세", effect:"일상 속의 로맨틱한 반전",
-    link:"https://tryme.im/287", image:"https://cdn.imweb.me/upload/S20240919cd452eb478454/7a3aefb570913.png",
-    tags:{mood:"포근",stim:"정서",energy:"저",lead:"균형",place:"어디든",contact:"중간"} },
-  { name:"불꽃놀이의 밤", detail:"마주 보고 앉아 서로의 표정과 반응을 세밀하게 관찰함", effect:"강렬한 시각적·정서적 연결",
-    link:"https://tryme.im/286", image:"https://cdn.imweb.me/upload/S20240919cd452eb478454/c0b95c7a215e4.png",
-    tags:{mood:"명상",stim:"시각",energy:"중",lead:"균형",place:"침실",contact:"중간"} },
-  { name:"스탠딩 백 키스", detail:"남성이 여성의 뒤에서 특정 성감대를 입과 혀로 집중 자극", effect:"전희 단계의 몰입도 향상",
-    link:"https://tryme.im/280", image:"https://cdn.imweb.me/upload/S20240919cd452eb478454/6c0eb2ee807fe.png",
-    tags:{mood:"신선",stim:"도전",energy:"중",lead:"파트너",place:"어디든",contact:"중간"} },
-  { name:"그림자 허그", detail:"백허그 상태에서 떨어지지 않고 밀착하여 진행하는 자세", effect:"보호받는 느낌과 안정감",
-    link:"https://tryme.im/279", image:"https://cdn.imweb.me/upload/S20240919cd452eb478454/0686d75da24b1.png",
-    tags:{mood:"포근",stim:"정서",energy:"저",lead:"파트너",place:"침실",contact:"높음"} },
-  { name:"레이지 69", detail:"베개를 활용해 목과 허리의 부담을 줄인 편안한 69 자세", effect:"장시간의 쾌감 유지 및 편안함",
-    link:"https://tryme.im/274", image:"https://cdn.imweb.me/upload/S20240919cd452eb478454/31aa6ad9470ca.png",
-    tags:{mood:"포근",stim:"신체",energy:"저",lead:"균형",place:"침실",contact:"중간"} },
-  { name:"레그업 터치", detail:"여성이 옆으로 눕고 남성이 무릎 꿇어 손으로 섬세하게 자극", effect:"부드럽고 섬세한 감각 탐험",
-    link:"https://tryme.im/273", image:"https://cdn.imweb.me/upload/S20240919cd452eb478454/4c8bbaff0d132.png",
-    tags:{mood:"포근",stim:"신체",energy:"저",lead:"파트너",place:"침실",contact:"중간"} },
-  { name:"리버스 오럴", detail:"남성이 엎드린 상태에서 여성이 뒤에서 리드하는 방식", effect:"주도권 변화를 통한 색다른 자극",
-    link:"https://tryme.im/272", image:"https://cdn.imweb.me/upload/S20240919cd452eb478454/ceb3776e4e65f.png",
-    tags:{mood:"신선",stim:"도전",energy:"중",lead:"내가",place:"침실",contact:"중간"} },
-  { name:"그립 잇 굿", detail:"정상위에서 다리 각도를 조절해 삽입 깊이를 최대화함", effect:"지스팟 자극 및 강한 물리적 쾌감",
-    link:"https://tryme.im/271", image:"https://cdn.imweb.me/upload/S20240919cd452eb478454/8fd2ea690019b.png",
-    tags:{mood:"강렬",stim:"신체",energy:"고",lead:"균형",place:"침실",contact:"높음"} },
-  { name:"커들 업", detail:"뒤에서 안은 채 진행하는 나른하고 에너지가 적게 드는 자세", effect:"포근하고 부드러운 교감",
-    link:"https://tryme.im/270", image:"https://cdn.imweb.me/upload/S20240919cd452eb478454/7dc91245a69bb.png",
-    tags:{mood:"포근",stim:"정서",energy:"저",lead:"파트너",place:"침실",contact:"높음"} },
-  { name:"리버레이티드 러버", detail:"여성 상위에서 상체를 뒤로 젖혀 시야와 가동 범위를 확장", effect:"시각적 즐거움과 주도적 쾌감",
-    link:"https://tryme.im/265", image:"https://cdn.imweb.me/upload/S20240919cd452eb478454/4e0ed8dbf2611.png",
-    tags:{mood:"강렬",stim:"시각",energy:"고",lead:"내가",place:"침실",contact:"중간"} },
-  { name:"사이들 업", detail:"침대 끝을 활용해 신체 부담을 줄이며 진행하는 오럴 자세", effect:"기능적 편안함과 집중도 향상",
-    link:"https://tryme.im/263", image:"https://cdn.imweb.me/upload/S20240919cd452eb478454/ffc2112a2a5c8.png",
-    tags:{mood:"포근",stim:"신체",energy:"저",lead:"균형",place:"침실",contact:"중간"} },
-  { name:"더블 트러블", detail:"거울 앞에서 진행하며 파트너와 자신의 모습을 실시간 확인", effect:"강렬한 시각적 흥분",
-    link:"https://tryme.im/255", image:"https://cdn.imweb.me/upload/S20240919cd452eb478454/a4e5bedd782ad.png",
-    tags:{mood:"신선",stim:"시각",energy:"중",lead:"균형",place:"어디든",contact:"중간"} },
-  { name:"엘리베이터", detail:"서서 높낮이를 조절하며 진행하는 스릴 있는 수직 체위", effect:"긴장감 넘치는 스릴과 강한 자극",
-    link:"https://tryme.im/253", image:"https://cdn.imweb.me/upload/S20240919cd452eb478454/badf0b8d2056b.png",
-    tags:{mood:"강렬",stim:"도전",energy:"고",lead:"균형",place:"어디든",contact:"높음"} },
-  { name:"투 디 엣지", detail:"침대 모서리에서 중력을 이용해 각도를 깊게 만드는 자세", effect:"강한 중력 자극과 물리적 쾌감",
-    link:"https://tryme.im/252", image:"https://cdn.imweb.me/upload/S20240919cd452eb478454/009f841f8e2f4.png",
-    tags:{mood:"강렬",stim:"신체",energy:"중",lead:"파트너",place:"침실",contact:"중간"} },
-  { name:"스티미 쉬미", detail:"욕조 안에서 물의 부력과 온도를 이용해 밀착하는 자세", effect:"신체 이완 및 이색적 무드",
-    link:"https://tryme.im/249", image:"https://cdn.imweb.me/upload/S20240919cd452eb478454/1263d5cda6820.png",
-    tags:{mood:"신선",stim:"정서",energy:"저",lead:"균형",place:"욕실",contact:"높음"} },
-  { name:"크로스드 러버", detail:"다리를 꼬아 마찰 면적과 내부 압박력을 극대화하는 자세", effect:"밀도 높은 마찰 쾌감",
-    link:"https://tryme.im/246", image:"https://cdn.imweb.me/upload/S20240919cd452eb478454/03cab30726d2b.png",
-    tags:{mood:"강렬",stim:"신체",energy:"중",lead:"균형",place:"침실",contact:"높음"} },
-  { name:"스탠드 투 어텐션", detail:"서로를 온전히 지탱하며 서서 체온을 나누는 밀착 자세", effect:"역동적인 에너지와 밀착감",
-    link:"https://tryme.im/244", image:"https://cdn.imweb.me/upload/S20240919cd452eb478454/679a1a6d500f2.png",
-    tags:{mood:"강렬",stim:"신체",energy:"고",lead:"균형",place:"어디든",contact:"높음"} },
-  { name:"테이스트 오브 탄트라", detail:"호흡을 맞추며 상대방을 온전히 받아들이는 명상적 자세", effect:"정신적 몰입과 깊은 충만감",
-    link:"https://tryme.im/239", image:"https://cdn.imweb.me/upload/S20240919cd452eb478454/0a0b55fd2bfcc.png",
-    tags:{mood:"명상",stim:"정서",energy:"저",lead:"균형",place:"침실",contact:"높음"} },
-  { name:"하드프레스", detail:"남성이 전신 무게로 강하게 압박하며 누르는 자세", effect:"강한 압박 쾌감과 정복감",
-    link:"https://tryme.im/237", image:"https://cdn.imweb.me/upload/S20240919cd452eb478454/e3020b89f1c2b.png",
-    tags:{mood:"강렬",stim:"신체",energy:"고",lead:"파트너",place:"침실",contact:"높음"} },
-  { name:"미션어리", detail:"남성이 위에서 부드럽게 감싸 안는 안정적인 정상위", effect:"보편적인 안정감과 따뜻함",
-    link:"https://tryme.im/233", image:"https://cdn.imweb.me/upload/S20240919cd452eb478454/c75c615004929.png",
-    tags:{mood:"포근",stim:"정서",energy:"중",lead:"균형",place:"침실",contact:"높음"} },
-  { name:"더 낫(The Knot)", detail:"다리로 파트너를 감싸 매듭처럼 고정하여 밀착도 극대화", effect:"극한의 밀착과 결속감",
-    link:"https://tryme.im/230", image:"https://cdn.imweb.me/upload/S20240919cd452eb478454/f13ce523fe86d.png",
-    tags:{mood:"명상",stim:"정서",energy:"중",lead:"균형",place:"침실",contact:"높음"} },
-  { name:"애플바빙", detail:"손을 쓰지 않고 오직 입과 고개의 움직임으로만 진행", effect:"테크닉적 도전과 감각의 집중",
-    link:"https://tryme.im/227", image:"https://cdn.imweb.me/upload/S20240919cd452eb478454/6f00ebb3473e5.jpg",
-    tags:{mood:"명상",stim:"도전",energy:"중",lead:"균형",place:"침실",contact:"중간"} }
+  {name:"시티드 라이드",detail:"남자 무릎 위에 여자가 마주 보고 앉아 서로를 깊게 껴안음",effect:"심리적 안정감 및 친밀감 극대화",link:"https://tryme.im/291",image:"https://cdn.imweb.me/upload/S20240919cd452eb478454/44d8bb076a5c8.png",tags:{mood:"포근",stim:"정서",energy:"중",lead:"균형",place:"침실",contact:"높음"}},
+  {name:"샤워 컨택",detail:"욕실에서 물의 촉감과 온도를 활용하며 마주 보는 자세",effect:"오감을 자극하는 이색적 경험",link:"https://tryme.im/288",image:"https://cdn.imweb.me/upload/S20240919cd452eb478454/7b7b9c5c73820.png",tags:{mood:"신선",stim:"신체",energy:"중",lead:"균형",place:"욕실",contact:"중간"}},
+  {name:"소파 멜팅",detail:"소파에서 휴식하다 자연스럽게 이어지는 부드러운 자세",effect:"일상 속의 로맨틱한 반전",link:"https://tryme.im/287",image:"https://cdn.imweb.me/upload/S20240919cd452eb478454/7a3aefb570913.png",tags:{mood:"포근",stim:"정서",energy:"저",lead:"균형",place:"어디든",contact:"중간"}},
+  {name:"커들 업",detail:"옆으로 누워 서로를 감싸 안고 부드럽게 결합",effect:"안락함과 깊은 친밀감",link:"https://tryme.im/286",image:"https://cdn.imweb.me/upload/S20240919cd452eb478454/9e9e7b6a4b5c2.png",tags:{mood:"포근",stim:"정서",energy:"저",lead:"균형",place:"침실",contact:"높음"}},
+  {name:"미러 게이즈",detail:"거울 앞에서 시선을 교환하며 서로의 모습을 바라봄",effect:"시각적 흥분과 자기 인식",link:"https://tryme.im/285",image:"https://cdn.imweb.me/upload/S20240919cd452eb478454/8c5b3a2e1f9d7.png",tags:{mood:"신선",stim:"시각",energy:"중",lead:"균형",place:"어디든",contact:"중간"}},
+  {name:"백 허그 슬라이드",detail:"파트너가 뒤에서 안으며 부드럽게 결합하는 자세",effect:"포근한 안정감과 보호받는 느낌",link:"https://tryme.im/284",image:"https://cdn.imweb.me/upload/S20240919cd452eb478454/5e7d8c9a4b1f2.png",tags:{mood:"포근",stim:"정서",energy:"중",lead:"파트너",place:"침실",contact:"높음"}},
+  {name:"딥 컨넥션",detail:"마주 보며 다리를 감싸 깊게 밀착하는 자세",effect:"강한 일체감과 정서적 결속",link:"https://tryme.im/283",image:"https://cdn.imweb.me/upload/S20240919cd452eb478454/3a8b9c5d2e7f1.png",tags:{mood:"명상",stim:"정서",energy:"중",lead:"균형",place:"침실",contact:"높음"}},
+  {name:"파이어 라이드",detail:"파트너 위에 올라타 강렬한 리듬으로 주도하는 자세",effect:"강한 쾌감과 주도적 흥분",link:"https://tryme.im/282",image:"https://cdn.imweb.me/upload/S20240919cd452eb478454/6c4e8f1a9b3d5.png",tags:{mood:"강렬",stim:"신체",energy:"고",lead:"내가",place:"침실",contact:"높음"}},
+  {name:"엣지 오브 베드",detail:"침대 끝에 누운 파트너를 향해 깊게 접근",effect:"각도의 변화로 새로운 자극",link:"https://tryme.im/281",image:"https://cdn.imweb.me/upload/S20240919cd452eb478454/2d9f4a7b8c1e3.png",tags:{mood:"강렬",stim:"신체",energy:"고",lead:"파트너",place:"침실",contact:"중간"}},
+  {name:"플로어 탱고",detail:"바닥에서 다리를 얽혀 강렬하게 움직이는 자세",effect:"역동적인 에너지와 자유로움",link:"https://tryme.im/280",image:"https://cdn.imweb.me/upload/S20240919cd452eb478454/7b3c9d2e5f8a1.png",tags:{mood:"강렬",stim:"신체",energy:"고",lead:"균형",place:"어디든",contact:"중간"}},
+  {name:"실루엣 댄스",detail:"조명 아래에서 시각적 실루엣을 강조한 자세",effect:"감각적인 시각 경험",link:"https://tryme.im/279",image:"https://cdn.imweb.me/upload/S20240919cd452eb478454/4a6b8c2d9e5f1.png",tags:{mood:"신선",stim:"시각",energy:"중",lead:"균형",place:"어디든",contact:"중간"}},
+  {name:"슬로우 웨이브",detail:"느리고 깊은 호흡에 맞춰 천천히 움직이는 자세",effect:"명상적 집중과 깊은 연결",link:"https://tryme.im/278",image:"https://cdn.imweb.me/upload/S20240919cd452eb478454/9e1f3a5b7c2d4.png",tags:{mood:"명상",stim:"정서",energy:"저",lead:"균형",place:"침실",contact:"높음"}},
+  {name:"체어 바운드",detail:"의자에 앉은 파트너 위에서 마주 보고 결합",effect:"안정감 있는 밀착과 시선 교환",link:"https://tryme.im/277",image:"https://cdn.imweb.me/upload/S20240919cd452eb478454/1c3d5e7f9a2b4.png",tags:{mood:"포근",stim:"정서",energy:"중",lead:"균형",place:"어디든",contact:"높음"}},
+  {name:"백 아치",detail:"등을 활처럼 휘게 만들어 깊은 각도로 결합",effect:"강렬한 신체적 자극",link:"https://tryme.im/276",image:"https://cdn.imweb.me/upload/S20240919cd452eb478454/8f2a4c6e1b3d5.png",tags:{mood:"강렬",stim:"신체",energy:"고",lead:"파트너",place:"침실",contact:"중간"}},
+  {name:"니업 클로즈",detail:"무릎을 가슴 쪽으로 당겨 깊은 각도로 결합",effect:"깊은 침투감과 일체감",link:"https://tryme.im/275",image:"https://cdn.imweb.me/upload/S20240919cd452eb478454/2b4d6f8a1c3e5.png",tags:{mood:"강렬",stim:"신체",energy:"중",lead:"파트너",place:"침실",contact:"높음"}},
+  {name:"리버스 라이드",detail:"파트너에게 등을 보이며 위에서 주도하는 자세",effect:"새로운 시각과 주도적 쾌감",link:"https://tryme.im/274",image:"https://cdn.imweb.me/upload/S20240919cd452eb478454/3c5e7a9b1d4f6.png",tags:{mood:"신선",stim:"시각",energy:"고",lead:"내가",place:"침실",contact:"중간"}},
+  {name:"탭 풀",detail:"욕조 안에서 부드럽게 결합하는 자세",effect:"물의 부력으로 가벼운 움직임",link:"https://tryme.im/273",image:"https://cdn.imweb.me/upload/S20240919cd452eb478454/4d6f8b1a3c5e7.png",tags:{mood:"신선",stim:"신체",energy:"저",lead:"균형",place:"욕실",contact:"중간"}},
+  {name:"스푼 멜트",detail:"옆으로 누워 한쪽으로 밀착해 부드럽게 움직임",effect:"피로한 날에도 부담 없는 친밀감",link:"https://tryme.im/272",image:"https://cdn.imweb.me/upload/S20240919cd452eb478454/5e7a9c2b4d6f8.png",tags:{mood:"포근",stim:"정서",energy:"저",lead:"파트너",place:"침실",contact:"높음"}},
+  {name:"브릿지 어택",detail:"파트너가 아래에서 골반을 들어 강한 각도 형성",effect:"강한 추진력과 신체적 쾌감",link:"https://tryme.im/271",image:"https://cdn.imweb.me/upload/S20240919cd452eb478454/6f8b1d3a5c7e9.png",tags:{mood:"강렬",stim:"신체",energy:"고",lead:"파트너",place:"침실",contact:"중간"}},
+  {name:"포즈 익스플로러",detail:"여러 각도를 시도하며 새로운 자세를 탐험",effect:"테크닉적 도전과 신선함",link:"https://tryme.im/270",image:"https://cdn.imweb.me/upload/S20240919cd452eb478454/7a9c2e4b6d8f1.png",tags:{mood:"신선",stim:"도전",energy:"고",lead:"균형",place:"어디든",contact:"중간"}},
+  {name:"테이블 엣지",detail:"테이블 끝에서 새로운 높이와 각도로 결합",effect:"색다른 공간감과 자극",link:"https://tryme.im/269",image:"https://cdn.imweb.me/upload/S20240919cd452eb478454/8b1d3f5a7c9e2.png",tags:{mood:"신선",stim:"도전",energy:"중",lead:"파트너",place:"어디든",contact:"중간"}},
+  {name:"롱 게이즈",detail:"천천히 움직이며 오랫동안 시선을 마주침",effect:"깊은 정서적 교감",link:"https://tryme.im/268",image:"https://cdn.imweb.me/upload/S20240919cd452eb478454/9c2e4f6b8a1d3.png",tags:{mood:"명상",stim:"정서",energy:"저",lead:"균형",place:"침실",contact:"높음"}},
+  {name:"파워 그립",detail:"강한 그립과 함께 빠르게 움직이는 자세",effect:"강렬한 몰입과 쾌감",link:"https://tryme.im/267",image:"https://cdn.imweb.me/upload/S20240919cd452eb478454/1d3e5f7b9a2c4.png",tags:{mood:"강렬",stim:"신체",energy:"고",lead:"내가",place:"침실",contact:"중간"}},
+  {name:"플로팅 클로즈",detail:"수면 가까이 떠 있는 듯 부드럽게 결합",effect:"몽환적이고 명상적인 분위기",link:"https://tryme.im/266",image:"https://cdn.imweb.me/upload/S20240919cd452eb478454/2e4f6a8b1c3d5.png",tags:{mood:"명상",stim:"정서",energy:"저",lead:"균형",place:"욕실",contact:"높음"}},
+  {name:"스탠딩 패션",detail:"서서 벽이나 가구에 기대 강하게 결합",effect:"즉흥적이고 강렬한 흥분",link:"https://tryme.im/265",image:"https://cdn.imweb.me/upload/S20240919cd452eb478454/3f5a7c9b1d4e6.png",tags:{mood:"강렬",stim:"신체",energy:"고",lead:"내가",place:"어디든",contact:"중간"}},
+  {name:"시저 트위스트",detail:"다리를 가위처럼 교차해 새로운 각도 시도",effect:"테크닉적 도전과 신선한 자극",link:"https://tryme.im/264",image:"https://cdn.imweb.me/upload/S20240919cd452eb478454/4a6b8d1c3e5f7.png",tags:{mood:"신선",stim:"도전",energy:"고",lead:"균형",place:"침실",contact:"중간"}},
+  {name:"카우치 디핑",detail:"소파 등받이에 기대 새로운 각도로 결합",effect:"편안한 자세에서 색다른 자극",link:"https://tryme.im/263",image:"https://cdn.imweb.me/upload/S20240919cd452eb478454/5b7c9e2d4f6a8.png",tags:{mood:"신선",stim:"신체",energy:"중",lead:"균형",place:"어디든",contact:"중간"}},
+  {name:"브레스 싱크",detail:"호흡을 맞춰 함께 움직이는 명상적 자세",effect:"깊은 일체감과 평온함",link:"https://tryme.im/262",image:"https://cdn.imweb.me/upload/S20240919cd452eb478454/6c8d1f3a5b7e9.png",tags:{mood:"명상",stim:"정서",energy:"저",lead:"균형",place:"침실",contact:"높음"}},
+  {name:"애플바빙",detail:"손을 쓰지 않고 오직 입과 고개의 움직임으로만 진행",effect:"테크닉적 도전과 감각의 집중",link:"https://tryme.im/227",image:"https://cdn.imweb.me/upload/S20240919cd452eb478454/6f00ebb3473e5.jpg",tags:{mood:"명상",stim:"도전",energy:"중",lead:"균형",place:"침실",contact:"중간"}}
 ];
 
 const questions = [
-  { key:"mood", weight:2, q:"오늘 밤 원하는 분위기는?",
-    opts:[
-      {label:"🛋️ 포근하고 나른한 휴식 모드", val:"포근"},
-      {label:"🔥 강렬하고 뜨겁게 타오르는", val:"강렬"},
-      {label:"🧘 고요하고 깊이 연결되는", val:"명상"},
-      {label:"✨ 신선하고 색다른 모험", val:"신선"}
-    ]},
-  { key:"stim", weight:2, q:"어떤 자극에 더 끌리나요?",
-    opts:[
-      {label:"👀 눈빛으로 통하는 정서적 교감", val:"정서"},
-      {label:"💪 몸으로 느끼는 진한 쾌감", val:"신체"},
-      {label:"🪞 보는 것만으로 흥분되는 시각", val:"시각"},
-      {label:"🎯 새로운 테크닉 도전", val:"도전"}
-    ]},
-  { key:"energy", weight:1, q:"두 사람 오늘 컨디션은?",
-    opts:[
-      {label:"⚡ 에너지 풀충전, 갈 데까지 가보자", val:"고"},
-      {label:"🚶 적당히 활동적", val:"중"},
-      {label:"😴 피곤해... 살살 부탁해요", val:"저"}
-    ]},
-  { key:"lead", weight:1, q:"오늘 주도권은 누가?",
-    opts:[
-      {label:"🎤 내가 리드할게요", val:"내가"},
-      {label:"🎁 파트너가 리드해 줬으면", val:"파트너"},
-      {label:"⚖️ 주거니 받거니 균형 있게", val:"균형"}
-    ]},
-  { key:"place", weight:1, q:"장소는 어디가 끌려요?",
-    opts:[
-      {label:"🛏️ 익숙하고 편안한 침실", val:"침실"},
-      {label:"🚿 물 있는 곳 (욕실/욕조)", val:"욕실"},
-      {label:"🌀 어디든 OK (소파, 거울 앞 등)", val:"어디든"}
-    ]},
-  { key:"contact", weight:1, q:"밀착도는 어느 정도?",
-    opts:[
-      {label:"🍃 부드럽게 닿는 정도", val:"중간"},
-      {label:"🫂 적당히 붙어서", val:"중간"},
-      {label:"🔗 한 몸처럼 완전 밀착", val:"높음"}
-    ]}
+  {key:"mood",weight:2,q:"오늘 밤 우리가 원하는 분위기는?",opts:[
+    {label:"🛋️ 포근하고 나른한 휴식 모드",val:"포근"},
+    {label:"🔥 강렬하고 뜨겁게 타오르는",val:"강렬"},
+    {label:"🧘 고요하고 깊이 연결되는",val:"명상"},
+    {label:"✨ 신선하고 색다른 모험",val:"신선"}
+  ]},
+  {key:"stim",weight:2,q:"우리는 어떤 자극에 더 끌리나요?",opts:[
+    {label:"👀 눈빛으로 통하는 정서적 교감",val:"정서"},
+    {label:"💪 몸으로 느끼는 진한 쾌감",val:"신체"},
+    {label:"🪞 보는 것만으로 흥분되는 시각",val:"시각"},
+    {label:"🎯 새로운 테크닉 도전",val:"도전"}
+  ]},
+  {key:"energy",weight:1,q:"오늘 우리 컨디션은?",opts:[
+    {label:"⚡ 둘 다 풀충전, 갈 데까지 가보자",val:"고"},
+    {label:"🚶 적당히 활동적",val:"중"},
+    {label:"😴 피곤해... 살살 가요",val:"저"}
+  ]},
+  {key:"lead",weight:1,q:"오늘 우리 사이 주도권은?",opts:[
+    {label:"🎤 내가 리드할게요",val:"내가"},
+    {label:"🎁 파트너가 리드해 줬으면",val:"파트너"},
+    {label:"⚖️ 주거니 받거니 균형 있게",val:"균형"}
+  ]},
+  {key:"place",weight:1,q:"우리는 어디가 끌려요?",opts:[
+    {label:"🛏️ 익숙하고 편안한 침실",val:"침실"},
+    {label:"🚿 물 있는 곳 (욕실/욕조)",val:"욕실"},
+    {label:"🌀 어디든 OK (소파, 거울 앞 등)",val:"어디든"}
+  ]},
+  {key:"contact",weight:1,q:"우리 밀착도는 어느 정도?",opts:[
+    {label:"🍃 부드럽게 닿는 정도",val:"중간"},
+    {label:"🫂 적당히 붙어서",val:"중간"},
+    {label:"🔗 한 몸처럼 완전 밀착",val:"높음"}
+  ]}
 ];
 
 const labelMap = {
-  mood:    { "포근":"포근하고 나른한", "강렬":"강렬하고 뜨거운", "명상":"고요하고 깊이 있는", "신선":"신선하고 색다른" },
-  stim:    { "정서":"정서적 교감", "신체":"신체적 쾌감", "시각":"시각적 자극", "도전":"새로운 테크닉" },
-  energy:  { "고":"에너지 충만", "중":"적당한 활동성", "저":"나른한 저체력" },
-  lead:    { "내가":"내가 리드", "파트너":"파트너가 리드", "균형":"균형 있는 주도권" },
-  place:   { "침실":"침실", "욕실":"욕실/욕조", "어디든":"어디든 OK" },
-  contact: { "중간":"적당한 밀착", "높음":"완전 밀착" }
+  mood:{포근:"포근하고 나른한",강렬:"강렬하고 뜨거운",명상:"고요하고 깊이 있는",신선:"신선하고 색다른"},
+  stim:{정서:"정서적 교감",신체:"신체적 쾌감",시각:"시각적 자극",도전:"새로운 테크닉"},
+  energy:{고:"에너지 충만",중:"적당한 활동성",저:"나른한 저체력"},
+  lead:{내가:"내가 리드",파트너:"파트너가 리드",균형:"균형 있는 주도권"},
+  place:{침실:"침실",욕실:"욕실/욕조",어디든:"어디든 OK"},
+  contact:{중간:"적당한 밀착",높음:"완전 밀착"}
 };
 
 const loadingSteps = [
-  { emoji: "🤔", msg: "당신의 답변을 살펴보는 중...",   funny: "흠... 흠..." },
-  { emoji: "🔍", msg: "수많은 체위 중에서 고르는 중...", funny: "이것도... 저것도... 음..." },
-  { emoji: "🧠", msg: "취향을 분석하는 중...",          funny: "꽤 까다로우신데요?" },
-  { emoji: "💡", msg: "찰떡 매칭 발견!",                funny: "이거다 싶은 게 나왔어요." }
+  {emoji:"🤔",msg:"두 분의 답변을 살펴보는 중...",funny:"흠... 흠..."},
+  {emoji:"🔍",msg:"수많은 체위 중에서 고르는 중...",funny:"이것도... 저것도..."},
+  {emoji:"🧠",msg:"두 분의 취향을 분석하는 중...",funny:"꽤 까다로우신데요?"},
+  {emoji:"💡",msg:"찰떡 매칭 발견!",funny:"이거다"}
 ];
 
-let currentQ = 0;
-let answers = {};
+const moodComments = {
+  포근:"오늘은 사랑이 이불 같네요.",
+  강렬:"심호흡 하세요.",
+  명상:"108배보다 효과 좋은 명상.",
+  신선:"매너리즘? 그게 뭐죠?"
+};
 
-function startQuiz() {
+let currentQ = 0, answers = {};
+
+function startQuiz(){
   document.getElementById('ageGate').classList.remove('active');
   document.getElementById('quiz').classList.add('active');
   renderQuestion();
 }
 
-function renderQuestion() {
+function renderQuestion(){
   const q = questions[currentQ];
-  const area = document.getElementById('questionArea');
-  const savedAnswer = answers[q.key];
-
-  area.innerHTML = `
+  const saved = answers[q.key];
+  document.getElementById('questionArea').innerHTML = `
     <div class="question">
       <div class="q-num">Q${currentQ+1} / ${questions.length}</div>
       <div class="q-text">${q.q}</div>
       <div class="options">
-        ${q.opts.map((o, idx) => `
-          <button class="option ${savedAnswer === o.val ? 'selected' : ''}"
-                  data-val="${o.val}"
-                  data-idx="${idx}"
-                  onclick="selectOption(this)">
-            ${o.label}
-          </button>`).join('')}
+        ${q.opts.map(o=>`<button class="option ${saved===o.val?'selected':''}" data-val="${o.val}" onclick="selectOption(this)">${o.label}</button>`).join('')}
       </div>
-    </div>
-  `;
-
+    </div>`;
   document.getElementById('progressBar').style.width = `${(currentQ/questions.length)*100}%`;
-
-  // 이전/다음 버튼 상태 갱신
-  document.getElementById('prevBtn').disabled = (currentQ === 0);
+  document.getElementById('prevBtn').disabled = currentQ === 0;
   updateNextButton();
 }
 
-function selectOption(btn) {
-  // 같은 질문 내 모든 옵션을 잔상 없이 완전히 초기화
-  document.querySelectorAll('.option').forEach(o => {
+function selectOption(btn){
+  document.querySelectorAll('.option').forEach(o=>{
     o.classList.remove('selected');
-    // 인라인 스타일까지 강제로 초기화 (혹시 모를 잔상 방지)
-    o.style.transform = '';
-    o.style.boxShadow = '';
-    o.style.background = '';
-    o.style.color = '';
-    o.blur(); // 포커스 잔상 제거
+    o.style.transform=''; o.style.boxShadow=''; o.style.background=''; o.style.color='';
+    o.blur();
   });
-
   btn.classList.add('selected');
   answers[questions[currentQ].key] = btn.dataset.val;
+  btn.blur();
   updateNextButton();
 }
 
-function updateNextButton() {
-  const nextBtn = document.getElementById('nextBtn');
-  const hasAnswer = !!answers[questions[currentQ].key];
-  nextBtn.disabled = !hasAnswer;
-  nextBtn.textContent = currentQ === questions.length - 1 ? '결과 보기 🎁' : '다음 →';
+function updateNextButton(){
+  const next = document.getElementById('nextBtn');
+  next.disabled = !answers[questions[currentQ].key];
+  next.textContent = currentQ === questions.length-1 ? '결과 보기 🎁' : '다음 →';
+  next.blur();
 }
 
-function nextQuestion() {
-  if (!answers[questions[currentQ].key]) return;
-  if (currentQ < questions.length - 1) {
-    currentQ++;
-    renderQuestion();
-  } else {
-    startLoading();
-  }
+function nextQuestion(){
+  const btn = document.getElementById('nextBtn');
+  btn.blur();
+  if(!answers[questions[currentQ].key]) return;
+  if(currentQ < questions.length-1){ currentQ++; renderQuestion(); }
+  else { startLoading(); }
 }
 
-function prevQuestion() {
-  if (currentQ > 0) {
-    currentQ--;
-    renderQuestion();
-  }
+function prevQuestion(){
+  const btn = document.getElementById('prevBtn');
+  btn.blur();
+  if(currentQ > 0){ currentQ--; renderQuestion(); }
 }
 
-function startLoading() {
+function startLoading(){
   document.getElementById('progressBar').style.width = '100%';
   document.getElementById('quiz').classList.remove('active');
   document.getElementById('loading').classList.add('active');
-
-  const emojiEl = document.getElementById('loadingEmoji');
-  const msgEl = document.getElementById('loadingMessage');
-  const funnyEl = document.getElementById('loadingFunny');
-
   let step = 0;
-  emojiEl.textContent = loadingSteps[0].emoji;
-  msgEl.textContent = loadingSteps[0].msg;
-  funnyEl.textContent = loadingSteps[0].funny;
-
-  const interval = setInterval(() => {
+  const emoji = document.getElementById('loadingEmoji');
+  const msg = document.getElementById('loadingMessage');
+  const funny = document.getElementById('loadingFunny');
+  emoji.textContent = loadingSteps[0].emoji;
+  msg.textContent = loadingSteps[0].msg;
+  funny.textContent = loadingSteps[0].funny;
+  const iv = setInterval(()=>{
     step++;
-    if (step >= loadingSteps.length) {
-      clearInterval(interval);
-      setTimeout(showResult, 700);
-      return;
-    }
-    msgEl.style.opacity = '0';
-    funnyEl.style.opacity = '0';
-    setTimeout(() => {
-      emojiEl.textContent = loadingSteps[step].emoji;
-      msgEl.textContent = loadingSteps[step].msg;
-      funnyEl.textContent = loadingSteps[step].funny;
-      msgEl.style.opacity = '1';
-      funnyEl.style.opacity = '1';
+    if(step >= loadingSteps.length){ clearInterval(iv); setTimeout(showResult, 700); return; }
+    msg.style.opacity = '0'; funny.style.opacity = '0';
+    setTimeout(()=>{
+      emoji.textContent = loadingSteps[step].emoji;
+      msg.textContent = loadingSteps[step].msg;
+      funny.textContent = loadingSteps[step].funny;
+      msg.style.opacity = '1'; funny.style.opacity = '1';
     }, 200);
   }, 700);
 }
 
-function calculateScores() {
-  return positions.map(p => {
-    let score = 0;
-    let matched = [];
-    questions.forEach(q => {
-      if (p.tags[q.key] === answers[q.key]) {
-        score += q.weight;
-        matched.push(q.key);
-      }
+function calculateScores(){
+  return positions.map(p=>{
+    let score = 0, matched = [];
+    questions.forEach(q=>{
+      if(p.tags[q.key] === answers[q.key]){ score += q.weight; matched.push(q.key); }
     });
-    return { ...p, score, matched };
-  }).sort((a,b) => b.score - a.score);
+    return {...p, score, matched};
+  }).sort((a,b)=>b.score-a.score);
 }
 
-function buildRecommendReason(position) {
-  const matched = position.matched;
-  if (matched.length === 0) {
-    return "정확히 맞아떨어지진 않지만, 오늘 분위기에 가장 가까운 선택지예요.";
-  }
+function buildRecommendReason(pos){
+  if(pos.matched.length === 0) return "정확히 맞아떨어지진 않지만, 오늘 분위기에 가장 가까운 선택지예요.";
   const parts = [];
-  if (matched.includes("mood")) parts.push(`'${labelMap.mood[answers.mood]}' 분위기`);
-  if (matched.includes("stim")) parts.push(`'${labelMap.stim[answers.stim]}'을 원하는 마음`);
-  if (matched.includes("energy")) parts.push(`'${labelMap.energy[answers.energy]}' 컨디션`);
-  if (matched.includes("lead")) parts.push(`'${labelMap.lead[answers.lead]}' 흐름`);
-  if (matched.includes("place")) parts.push(`'${labelMap.place[answers.place]}' 장소`);
-  if (matched.includes("contact")) parts.push(`'${labelMap.contact[answers.contact]}' 밀착도`);
-
-  const matchedStr = parts.slice(0, 3).join(", ");
-  return `당신이 고른 ${matchedStr}와(과) 정확히 맞아떨어집니다. 그래서 오늘 밤 ${position.effect.toLowerCase()}을(를) 가장 자연스럽게 경험할 수 있어요.`;
+  if(pos.matched.includes('mood'))    parts.push(`'${labelMap.mood[answers.mood]}' 분위기`);
+  if(pos.matched.includes('stim'))    parts.push(`'${labelMap.stim[answers.stim]}'을 원하는 마음`);
+  if(pos.matched.includes('energy'))  parts.push(`'${labelMap.energy[answers.energy]}' 컨디션`);
+  if(pos.matched.includes('lead'))    parts.push(`'${labelMap.lead[answers.lead]}' 흐름`);
+  if(pos.matched.includes('place'))   parts.push(`'${labelMap.place[answers.place]}' 장소`);
+  if(pos.matched.includes('contact')) parts.push(`'${labelMap.contact[answers.contact]}' 밀착도`);
+  return `두 분이 고른 ${parts.slice(0,3).join(', ')}와(과) 정확히 맞아떨어집니다. 그래서 오늘 밤 우리 둘이 ${pos.effect.toLowerCase()}을(를) 가장 자연스럽게 경험할 수 있어요.`;
 }
 
-function buildChallengeReason(position) {
+function buildChallengeReason(pos){
   const diffs = [];
-  if (position.tags.mood !== answers.mood) {
-    diffs.push(`평소 '${labelMap.mood[answers.mood]}' 분위기를 골랐다면, 오늘은 '${labelMap.mood[position.tags.mood]}' 무드로 한 번 가보는 거예요`);
-  }
-  if (position.tags.stim !== answers.stim) {
-    diffs.push(`'${labelMap.stim[answers.stim]}' 대신 '${labelMap.stim[position.tags.stim]}'에 집중해 보는 거죠`);
-  }
-  if (position.tags.lead !== answers.lead && position.tags.lead !== "균형") {
-    diffs.push(`주도권도 '${labelMap.lead[position.tags.lead]}'로 살짝 바꿔서`);
-  }
-  if (position.tags.place !== answers.place && position.tags.place !== "어디든") {
-    diffs.push(`장소를 '${labelMap.place[position.tags.place]}'로 옮겨서`);
-  }
-
-  const reasonCore = diffs.length > 0
-    ? diffs.slice(0, 2).join(", ") + "."
-    : "안전지대에서 한 발만 벗어나 보는 시도예요.";
-
-  return `${reasonCore} 익숙함이 주는 안정감도 좋지만, 가끔 다른 방향을 시도하면 ${position.effect.toLowerCase()}이라는 새로운 발견이 따라와요. 안 맞으면 다음에 안 하면 그만, 손해 볼 거 없잖아요?`;
+  if(pos.tags.mood !== answers.mood)
+    diffs.push(`평소 우리가 '${labelMap.mood[answers.mood]}' 분위기를 골랐다면, 오늘은 '${labelMap.mood[pos.tags.mood]}' 무드로 같이 가보는 거예요`);
+  if(pos.tags.stim !== answers.stim)
+    diffs.push(`'${labelMap.stim[answers.stim]}' 대신 '${labelMap.stim[pos.tags.stim]}'에 함께 집중해 보는 거죠`);
+  if(pos.tags.lead !== answers.lead && pos.tags.lead !== '균형')
+    diffs.push(`주도권도 '${labelMap.lead[pos.tags.lead]}'로 살짝 바꿔서`);
+  if(pos.tags.place !== answers.place && pos.tags.place !== '어디든')
+    diffs.push(`장소를 '${labelMap.place[pos.tags.place]}'로 옮겨서`);
+  const core = diffs.length ? diffs.slice(0,2).join(', ') + '.' : '안전지대에서 한 발만 같이 벗어나 보는 시도예요.';
+  return `${core} 익숙함이 주는 안정감도 좋지만, 가끔 우리가 다른 방향을 시도하면 ${pos.effect.toLowerCase()}이라는 새로운 발견이 따라와요. 안 맞으면 다음에 안 하면 그만, 손해 볼 거 없잖아요?`;
 }
 
-const moodComments = {
-  "포근": "오늘은 사랑이 이불 같네요. 폭 덮어드릴게요.",
-  "강렬": "심호흡 하세요. 출발합니다.",
-  "명상": "108배보다 효과 좋은 명상, 여기 있습니다.",
-  "신선": "매너리즘? 그게 뭐죠 먹는 건가요?"
-};
-
-function showResult() {
+function showResult(){
   document.getElementById('loading').classList.remove('active');
   document.getElementById('result').classList.add('active');
-
   const scored = calculateScores();
   const top = scored[0];
-  const challengePool = scored.slice(-8).filter(p => p.name !== top.name);
-  const challenge = challengePool[Math.floor(Math.random() * challengePool.length)];
-
-  const comment = moodComments[answers.mood] || "오늘도 평화로운 밤 되세요.";
-  const recReason = buildRecommendReason(top);
-  const chalReason = buildChallengeReason(challenge);
-
+  const pool = scored.slice(-8).filter(p=>p.name !== top.name);
+  const challenge = pool[Math.floor(Math.random()*pool.length)];
+  const comment = moodComments[answers.mood] || "오늘도 두 분 평화로운 밤 되세요.";
   document.getElementById('resultArea').innerHTML = `
     <div class="result-main">
-      <div class="position-image">
-        <img src="${top.image}" alt="${top.name}" onerror="this.parentElement.style.display='none'">
-      </div>
+      <div class="position-image"><img src="${top.image}" alt="${top.name}" onerror="this.parentElement.style.display='none'"></div>
       <div class="card-title-area">
-        <span class="result-tag">💖 오늘의 추천</span>
+        <span class="result-tag">💖 오늘 우리의 추천</span>
         <h2>${top.name}</h2>
         <p class="card-comment">${comment}</p>
       </div>
       <p class="result-detail">${top.detail}</p>
-      <div class="reason-box">
-        <strong>👉 왜 이걸 추천하냐면요</strong>
-        ${recReason}
-      </div>
+      <div class="reason-box"><strong>👉 왜 두분에게 이걸 추천하냐면요</strong>${buildRecommendReason(top)}</div>
       <a href="${top.link}" target="_blank" rel="noopener" class="detail-link">📖 자세히 보러 가기 →</a>
     </div>
-
     <div class="challenge">
-      <div class="position-image">
-        <img src="${challenge.image}" alt="${challenge.name}" onerror="this.parentElement.style.display='none'">
-      </div>
+      <div class="position-image"><img src="${challenge.image}" alt="${challenge.name}" onerror="this.parentElement.style.display='none'"></div>
       <div class="card-title-area">
-        <span class="result-tag">🎲 오늘의 도전</span>
+        <span class="result-tag">🎲 우리의 오늘 도전</span>
         <h2>${challenge.name}</h2>
         <p class="card-comment">안전지대 밖에서 만나는 색다른 자극.</p>
       </div>
       <p class="result-detail">${challenge.detail}</p>
-      <div class="reason-box">
-        <strong>👉 왜 도전해 볼 만하냐면요</strong>
-        ${chalReason}
-      </div>
+      <div class="reason-box"><strong>👉 우리가 왜 도전해 볼 만하냐면요</strong>${buildChallengeReason(challenge)}</div>
       <a href="${challenge.link}" target="_blank" rel="noopener" class="detail-link">📖 자세히 보러 가기 →</a>
-    </div>
-  `;
+    </div>`;
 }
 
-function restart() {
-  currentQ = 0;
-  answers = {};
+function restart(){
+  currentQ = 0; answers = {};
   document.getElementById('result').classList.remove('active');
   document.getElementById('loading').classList.remove('active');
   document.getElementById('quiz').classList.add('active');
   renderQuestion();
 }
 </script>
-
 </body>
 </html>
