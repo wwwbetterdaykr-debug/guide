@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>오늘 밤, 뭐 할래? — 체위 추천소</title>
+<title>오늘 밤, 추천 체위!</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Bagel+Fat+One&family=Jua&display=swap" rel="stylesheet">
@@ -29,7 +29,6 @@
     box-shadow: 8px 8px 0 #2a1a1a;
   }
 
-  /* ============ B급 타이틀 폰트 ============ */
   h1 {
     font-family: 'Black Han Sans', 'Jua', sans-serif;
     font-size: 36px;
@@ -135,11 +134,8 @@
     box-shadow: 4px 4px 0 #ff4d6d;
   }
 
-  /* ============ 로딩 화면 ============ */
-  .loading {
-    text-align: center;
-    padding: 30px 0 10px;
-  }
+  /* 로딩 */
+  .loading { text-align: center; padding: 30px 0 10px; }
   .loading-emoji {
     font-size: 64px;
     margin-bottom: 24px;
@@ -213,21 +209,16 @@
     transform: rotate(1deg);
   }
 
-  .card-header {
-    display: flex;
-    gap: 16px;
-    align-items: flex-start;
-    margin-bottom: 16px;
-  }
+  /* 이미지 — 카드 상단 전체 폭, 크게 */
   .position-image {
-    flex-shrink: 0;
-    width: 130px;
-    height: 130px;
+    width: 100%;
+    height: 280px;
     background: #fff;
-    border: 2px solid #2a1a1a;
+    border: 3px solid #2a1a1a;
     border-radius: 12px;
     overflow: hidden;
-    box-shadow: 3px 3px 0 #2a1a1a;
+    box-shadow: 4px 4px 0 #2a1a1a;
+    margin-bottom: 18px;
   }
   .position-image img {
     width: 100%;
@@ -235,35 +226,35 @@
     object-fit: cover;
     display: block;
   }
-  .card-header-text {
-    flex: 1;
-    min-width: 0;
-    padding-top: 2px;
+
+  /* 타이틀 영역 */
+  .card-title-area {
+    margin-bottom: 16px;
   }
   .result-tag {
     font-family: 'Jua', sans-serif;
-    font-size: 12px;
+    font-size: 13px;
     background: #fffaf5;
     color: #2a1a1a;
     display: inline-block;
-    padding: 4px 11px;
-    border-radius: 10px;
-    margin-bottom: 8px;
+    padding: 5px 12px;
+    border-radius: 12px;
+    margin-bottom: 10px;
     letter-spacing: 0.5px;
   }
   .challenge .result-tag { background: #2a1a1a; color: #ffd4a8; }
-  .card-header-text h2 {
+  .card-title-area h2 {
     font-family: 'Black Han Sans', 'Jua', sans-serif;
-    font-size: 28px;
+    font-size: 32px;
     line-height: 1.15;
-    margin-bottom: 6px;
+    margin-bottom: 8px;
     letter-spacing: -0.5px;
   }
   .card-comment {
-    font-size: 13px;
+    font-size: 14px;
     opacity: 0.95;
     font-style: italic;
-    line-height: 1.5;
+    line-height: 1.55;
   }
 
   .result-detail {
@@ -339,8 +330,8 @@
   @media (max-width: 480px) {
     h1 { font-size: 30px; }
     .q-text { font-size: 21px; }
-    .position-image { width: 110px; height: 110px; }
-    .card-header-text h2 { font-size: 24px; }
+    .position-image { height: 220px; }
+    .card-title-area h2 { font-size: 26px; }
     .result-detail { font-size: 15px; }
     .reason-box { font-size: 14px; }
     .loading-title { font-size: 26px; }
@@ -520,7 +511,6 @@ const labelMap = {
   contact: { "중간":"적당한 밀착", "높음":"완전 밀착" }
 };
 
-// ============ 로딩 메시지 시퀀스 ============
 const loadingSteps = [
   { emoji: "🤔", msg: "당신의 답변을 살펴보는 중...",   funny: "흠... 흠..." },
   { emoji: "🔍", msg: "수많은 체위 중에서 고르는 중...", funny: "이것도... 저것도... 음..." },
@@ -574,7 +564,6 @@ function selectOption(btn) {
   }, 350);
 }
 
-// ============ 로딩 시퀀스 실행 ============
 function startLoading() {
   document.getElementById('progressBar').style.width = '100%';
   document.getElementById('quiz').classList.remove('active');
@@ -585,7 +574,6 @@ function startLoading() {
   const funnyEl = document.getElementById('loadingFunny');
 
   let step = 0;
-  // 첫 번째 메시지 즉시 표시
   emojiEl.textContent = loadingSteps[0].emoji;
   msgEl.textContent = loadingSteps[0].msg;
   funnyEl.textContent = loadingSteps[0].funny;
@@ -594,11 +582,9 @@ function startLoading() {
     step++;
     if (step >= loadingSteps.length) {
       clearInterval(interval);
-      // 마지막 메시지 잠깐 보여준 뒤 결과로 이동
       setTimeout(showResult, 700);
       return;
     }
-    // 페이드 효과
     msgEl.style.opacity = '0';
     funnyEl.style.opacity = '0';
     setTimeout(() => {
@@ -687,15 +673,13 @@ function showResult() {
 
   document.getElementById('resultArea').innerHTML = `
     <div class="result-main">
-      <div class="card-header">
-        <div class="position-image">
-          <img src="${top.image}" alt="${top.name}" onerror="this.parentElement.style.display='none'">
-        </div>
-        <div class="card-header-text">
-          <span class="result-tag">💖 오늘의 추천</span>
-          <h2>${top.name}</h2>
-          <p class="card-comment">${comment}</p>
-        </div>
+      <div class="position-image">
+        <img src="${top.image}" alt="${top.name}" onerror="this.parentElement.style.display='none'">
+      </div>
+      <div class="card-title-area">
+        <span class="result-tag">💖 오늘의 추천</span>
+        <h2>${top.name}</h2>
+        <p class="card-comment">${comment}</p>
       </div>
       <p class="result-detail">${top.detail}</p>
       <div class="reason-box">
@@ -706,15 +690,13 @@ function showResult() {
     </div>
 
     <div class="challenge">
-      <div class="card-header">
-        <div class="position-image">
-          <img src="${challenge.image}" alt="${challenge.name}" onerror="this.parentElement.style.display='none'">
-        </div>
-        <div class="card-header-text">
-          <span class="result-tag">🎲 오늘의 도전</span>
-          <h2>${challenge.name}</h2>
-          <p class="card-comment">안전지대 밖에서 만나는 색다른 자극.</p>
-        </div>
+      <div class="position-image">
+        <img src="${challenge.image}" alt="${challenge.name}" onerror="this.parentElement.style.display='none'">
+      </div>
+      <div class="card-title-area">
+        <span class="result-tag">🎲 오늘의 도전</span>
+        <h2>${challenge.name}</h2>
+        <p class="card-comment">안전지대 밖에서 만나는 색다른 자극.</p>
       </div>
       <p class="result-detail">${challenge.detail}</p>
       <div class="reason-box">
