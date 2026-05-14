@@ -78,6 +78,8 @@
     color: #2a1a1a;
   }
   .options { display: flex; flex-direction: column; gap: 10px; }
+
+  /* ============ 옵션 스타일 (잔상 제거) ============ */
   .option {
     background: #fff;
     border: 2px solid #2a1a1a;
@@ -86,10 +88,13 @@
     cursor: pointer;
     font-size: 15px;
     text-align: left;
-    transition: all 0.15s;
+    transition: background 0.15s, color 0.15s, transform 0.15s, box-shadow 0.15s;
     font-family: inherit;
+    color: #2a1a1a;
+    transform: translate(0, 0);
+    box-shadow: none;
   }
-  .option:hover {
+  .option:hover:not(.selected):not(:disabled) {
     background: #ffe9ec;
     transform: translate(-2px, -2px);
     box-shadow: 4px 4px 0 #2a1a1a;
@@ -100,7 +105,18 @@
     transform: translate(-2px, -2px);
     box-shadow: 4px 4px 0 #2a1a1a;
   }
-  .option:disabled { cursor: not-allowed; }
+  /* 잔상 방지: 비활성 상태에서는 hover 효과 모두 차단 */
+  .option:disabled {
+    cursor: not-allowed;
+    pointer-events: none;
+  }
+  .option:disabled:not(.selected) {
+    background: #fff;
+    color: #2a1a1a;
+    transform: translate(0, 0);
+    box-shadow: none;
+  }
+
   .progress {
     height: 8px;
     background: #ffd4dc;
@@ -132,6 +148,49 @@
   .btn:hover {
     transform: translate(-2px, -2px);
     box-shadow: 4px 4px 0 #ff4d6d;
+  }
+
+  /* ============ 이전/다음 네비게이션 버튼 ============ */
+  .nav-buttons {
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+  }
+  .nav-btn {
+    flex: 1;
+    padding: 14px 18px;
+    border-radius: 12px;
+    font-size: 15px;
+    font-weight: bold;
+    cursor: pointer;
+    font-family: 'Jua', sans-serif;
+    letter-spacing: 1px;
+    transition: all 0.15s;
+    border: 2px solid #2a1a1a;
+  }
+  .nav-btn.prev {
+    background: #fffaf5;
+    color: #2a1a1a;
+    flex: 0 0 38%;
+  }
+  .nav-btn.next {
+    background: #2a1a1a;
+    color: #fff;
+  }
+  .nav-btn:not(:disabled):hover {
+    transform: translate(-2px, -2px);
+    box-shadow: 4px 4px 0 #ff4d6d;
+  }
+  .nav-btn.prev:not(:disabled):hover {
+    box-shadow: 4px 4px 0 #2a1a1a;
+  }
+  .nav-btn:disabled {
+    background: #e8d8d8;
+    color: #aaa;
+    border-color: #c8b8b8;
+    cursor: not-allowed;
+    box-shadow: none;
+    transform: none;
   }
 
   /* 로딩 */
@@ -209,7 +268,6 @@
     transform: rotate(1deg);
   }
 
-  /* 이미지 — 카드 상단 전체 폭, 크게 */
   .position-image {
     width: 100%;
     height: 280px;
@@ -227,10 +285,7 @@
     display: block;
   }
 
-  /* 타이틀 영역 */
-  .card-title-area {
-    margin-bottom: 16px;
-  }
+  .card-title-area { margin-bottom: 16px; }
   .result-tag {
     font-family: 'Jua', sans-serif;
     font-size: 13px;
@@ -256,7 +311,6 @@
     font-style: italic;
     line-height: 1.55;
   }
-
   .result-detail {
     font-size: 16px;
     line-height: 1.75;
@@ -284,7 +338,6 @@
     background: #fff;
     border: 2px solid #2a1a1a;
   }
-
   .detail-link {
     display: block;
     text-align: center;
@@ -313,14 +366,6 @@
   .result-main .detail-link:hover {
     box-shadow: 4px 4px 0 #fffaf5;
   }
-
-  .footer-text {
-    text-align: center;
-    margin-top: 24px;
-    font-size: 12px;
-    color: #8a5a5a;
-    line-height: 1.6;
-  }
   .header-deco {
     text-align: center;
     font-size: 40px;
@@ -336,6 +381,7 @@
     .reason-box { font-size: 14px; }
     .loading-title { font-size: 26px; }
     .loading-message { font-size: 16px; }
+    .nav-btn { font-size: 14px; padding: 12px 14px; }
   }
 </style>
 </head>
@@ -356,9 +402,13 @@
   <div id="quiz" class="quiz">
     <span class="badge">오늘의 추천</span>
     <h1>당신에게 딱 맞는 체위는?</h1>
-    <p class="subtitle">솔찍하게 답변해 주세요!</p>
+    <p class="subtitle">솔직하게 답변해 주세요!</p>
     <div class="progress"><div class="progress-bar" id="progressBar" style="width:0%"></div></div>
     <div id="questionArea"></div>
+    <div class="nav-buttons">
+      <button class="nav-btn prev" id="prevBtn" onclick="prevQuestion()">← 이전</button>
+      <button class="nav-btn next" id="nextBtn" onclick="nextQuestion()">다음 →</button>
+    </div>
   </div>
 
   <!-- 로딩 -->
@@ -520,7 +570,6 @@ const loadingSteps = [
 
 let currentQ = 0;
 let answers = {};
-let locked = false;
 
 function startQuiz() {
   document.getElementById('ageGate').classList.remove('active');
@@ -529,39 +578,72 @@ function startQuiz() {
 }
 
 function renderQuestion() {
-  locked = false;
   const q = questions[currentQ];
   const area = document.getElementById('questionArea');
+  const savedAnswer = answers[q.key];
+
   area.innerHTML = `
     <div class="question">
       <div class="q-num">Q${currentQ+1} / ${questions.length}</div>
       <div class="q-text">${q.q}</div>
       <div class="options">
-        ${q.opts.map(o => `<button class="option" data-val="${o.val}" onclick="selectOption(this)">${o.label}</button>`).join('')}
+        ${q.opts.map((o, idx) => `
+          <button class="option ${savedAnswer === o.val ? 'selected' : ''}"
+                  data-val="${o.val}"
+                  data-idx="${idx}"
+                  onclick="selectOption(this)">
+            ${o.label}
+          </button>`).join('')}
       </div>
     </div>
   `;
+
   document.getElementById('progressBar').style.width = `${(currentQ/questions.length)*100}%`;
+
+  // 이전/다음 버튼 상태 갱신
+  document.getElementById('prevBtn').disabled = (currentQ === 0);
+  updateNextButton();
 }
 
 function selectOption(btn) {
-  if (locked) return;
-  locked = true;
+  // 같은 질문 내 모든 옵션을 잔상 없이 완전히 초기화
   document.querySelectorAll('.option').forEach(o => {
     o.classList.remove('selected');
-    o.disabled = true;
+    // 인라인 스타일까지 강제로 초기화 (혹시 모를 잔상 방지)
+    o.style.transform = '';
+    o.style.boxShadow = '';
+    o.style.background = '';
+    o.style.color = '';
+    o.blur(); // 포커스 잔상 제거
   });
+
   btn.classList.add('selected');
   answers[questions[currentQ].key] = btn.dataset.val;
+  updateNextButton();
+}
 
-  setTimeout(() => {
-    if (currentQ < questions.length - 1) {
-      currentQ++;
-      renderQuestion();
-    } else {
-      startLoading();
-    }
-  }, 350);
+function updateNextButton() {
+  const nextBtn = document.getElementById('nextBtn');
+  const hasAnswer = !!answers[questions[currentQ].key];
+  nextBtn.disabled = !hasAnswer;
+  nextBtn.textContent = currentQ === questions.length - 1 ? '결과 보기 🎁' : '다음 →';
+}
+
+function nextQuestion() {
+  if (!answers[questions[currentQ].key]) return;
+  if (currentQ < questions.length - 1) {
+    currentQ++;
+    renderQuestion();
+  } else {
+    startLoading();
+  }
+}
+
+function prevQuestion() {
+  if (currentQ > 0) {
+    currentQ--;
+    renderQuestion();
+  }
 }
 
 function startLoading() {
@@ -663,7 +745,6 @@ function showResult() {
 
   const scored = calculateScores();
   const top = scored[0];
-
   const challengePool = scored.slice(-8).filter(p => p.name !== top.name);
   const challenge = challengePool[Math.floor(Math.random() * challengePool.length)];
 
@@ -711,7 +792,6 @@ function showResult() {
 function restart() {
   currentQ = 0;
   answers = {};
-  locked = false;
   document.getElementById('result').classList.remove('active');
   document.getElementById('loading').classList.remove('active');
   document.getElementById('quiz').classList.add('active');
