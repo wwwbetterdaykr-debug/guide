@@ -9,8 +9,9 @@
 <link href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Bagel+Fat+One&family=Jua&display=swap" rel="stylesheet">
 <style>
   *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-  button{outline:none!important;-webkit-tap-highlight-color:transparent}
-  button:focus,button:focus-visible,button:active{outline:none!important}
+  button,a{outline:none!important;-webkit-tap-highlight-color:transparent;-webkit-touch-callout:none}
+  button:focus,button:focus-visible,button:active,a:focus,a:focus-visible,a:active{outline:none!important}
+
   body{font-family:'Pretendard',-apple-system,sans-serif;background:#ffe9ec;color:#2a1a1a;min-height:100vh;padding:20px;
     background-image:radial-gradient(circle at 20% 30%,#ffc8d1 0%,transparent 40%),radial-gradient(circle at 80% 70%,#ffd4a8 0%,transparent 40%)}
   .container{max-width:640px;margin:auto;background:#fffaf5;border:3px solid #2a1a1a;border-radius:24px;padding:40px 30px;box-shadow:8px 8px 0 #2a1a1a}
@@ -23,30 +24,43 @@
   .q-num{color:#ff4d6d;font-weight:bold;font-size:14px;margin-bottom:8px;font-family:'Bagel Fat One',sans-serif;letter-spacing:1px}
   .q-text{font-family:'Black Han Sans','Jua',sans-serif;font-size:24px;margin-bottom:18px;line-height:1.35;color:#2a1a1a}
   .options{display:flex;flex-direction:column;gap:10px}
+
+  /* ===== 옵션 버튼 (기본 + selected만 정의) ===== */
   .option{background:#fff;border:2px solid #2a1a1a;border-radius:12px;padding:14px 18px;cursor:pointer;font-size:15px;text-align:left;
-    transition:background .15s,color .15s,transform .15s,box-shadow .15s;font-family:inherit;color:#2a1a1a;transform:translate(0,0);box-shadow:none;outline:none}
-  .option:hover:not(.selected):not(:disabled){background:#ffe9ec;transform:translate(-2px,-2px);box-shadow:4px 4px 0 #2a1a1a}
+    transition:background .15s,color .15s,transform .15s,box-shadow .15s;font-family:inherit;color:#2a1a1a;transform:translate(0,0);box-shadow:none}
   .option.selected{background:#ff4d6d;color:#fff;transform:translate(-2px,-2px);box-shadow:4px 4px 0 #2a1a1a;border-color:#2a1a1a}
-  .option:focus,.option:focus-visible,.option:active{outline:none!important}
-  .option.selected:focus,.option.selected:focus-visible{box-shadow:4px 4px 0 #2a1a1a!important}
   .option:disabled{cursor:not-allowed;pointer-events:none}
-  .option:disabled:not(.selected){background:#fff;color:#2a1a1a;transform:translate(0,0);box-shadow:none}
+
   .progress{height:8px;background:#ffd4dc;border-radius:10px;margin-bottom:30px;overflow:hidden;border:2px solid #2a1a1a}
   .progress-bar{height:100%;background:#ff4d6d;transition:width .3s}
-  .btn{background:#2a1a1a;color:#fff;border:none;padding:14px 28px;border-radius:12px;font-size:16px;font-weight:bold;cursor:pointer;width:100%;margin-top:10px;font-family:'Jua',sans-serif;letter-spacing:1px;transition:all .15s;outline:none}
-  .btn:hover{transform:translate(-2px,-2px);box-shadow:4px 4px 0 #ff4d6d}
-  .btn:focus,.btn:focus-visible,.btn:active{outline:none!important}
+
+  /* ===== 메인 버튼 ===== */
+  .btn{background:#2a1a1a;color:#fff;border:none;padding:14px 28px;border-radius:12px;font-size:16px;font-weight:bold;cursor:pointer;width:100%;margin-top:10px;font-family:'Jua',sans-serif;letter-spacing:1px;transition:transform .15s,box-shadow .15s;transform:translate(0,0);box-shadow:none}
+
+  /* ===== 네비게이션 버튼 ===== */
   .nav-buttons{display:flex;gap:10px;margin-top:20px}
-  .nav-btn{flex:1;padding:14px 18px;border-radius:12px;font-size:15px;font-weight:bold;cursor:pointer;font-family:'Jua',sans-serif;letter-spacing:1px;transition:transform .15s,box-shadow .15s,background .15s,color .15s;border:2px solid #2a1a1a;outline:none;-webkit-appearance:none;appearance:none}
+  .nav-btn{flex:1;padding:14px 18px;border-radius:12px;font-size:15px;font-weight:bold;cursor:pointer;font-family:'Jua',sans-serif;letter-spacing:1px;transition:transform .15s,box-shadow .15s,background .15s,color .15s;border:2px solid #2a1a1a;-webkit-appearance:none;appearance:none;transform:translate(0,0);box-shadow:none}
   .nav-btn.prev{background:#fffaf5;color:#2a1a1a;flex:0 0 38%}
   .nav-btn.next{background:#2a1a1a;color:#fff;border-color:#2a1a1a}
-  .nav-btn:focus,.nav-btn:focus-visible,.nav-btn:active{outline:none!important}
-  .nav-btn.next:focus,.nav-btn.next:focus-visible,.nav-btn.next:active{border:2px solid #2a1a1a!important;background:#2a1a1a;color:#fff}
-  .nav-btn.prev:focus,.nav-btn.prev:focus-visible,.nav-btn.prev:active{border:2px solid #2a1a1a!important;background:#fffaf5;color:#2a1a1a}
-  .nav-btn:not(:disabled):hover{transform:translate(-2px,-2px)}
-  .nav-btn.next:not(:disabled):hover{box-shadow:4px 4px 0 #ff4d6d}
-  .nav-btn.prev:not(:disabled):hover{box-shadow:4px 4px 0 #2a1a1a}
-  .nav-btn:disabled{background:#e8d8d8!important;color:#aaa!important;border:2px solid #c8b8b8!important;cursor:not-allowed;box-shadow:none;transform:none}
+  .nav-btn:disabled{background:#e8d8d8!important;color:#aaa!important;border:2px solid #c8b8b8!important;cursor:not-allowed;box-shadow:none!important;transform:none!important}
+
+  /* ===== hover 효과는 진짜 마우스 환경에서만 작동 (모바일 잔상 차단) ===== */
+  @media (hover:hover) and (pointer:fine){
+    .option:hover:not(.selected):not(:disabled){background:#ffe9ec;transform:translate(-2px,-2px);box-shadow:4px 4px 0 #2a1a1a}
+    .btn:hover{transform:translate(-2px,-2px);box-shadow:4px 4px 0 #ff4d6d}
+    .nav-btn:not(:disabled):hover{transform:translate(-2px,-2px)}
+    .nav-btn.next:not(:disabled):hover{box-shadow:4px 4px 0 #ff4d6d}
+    .nav-btn.prev:not(:disabled):hover{box-shadow:4px 4px 0 #2a1a1a}
+    .detail-link:hover{transform:translate(-2px,-2px);box-shadow:4px 4px 0 #ff4d6d}
+    .challenge .detail-link:hover{box-shadow:4px 4px 0 #2a1a1a}
+  }
+
+  /* ===== 클릭 직후만 살짝 눌리는 효과 (잔상 X) ===== */
+  .btn:active,.nav-btn:not(:disabled):active,.option:not(.selected):not(:disabled):active,.detail-link:active{
+    transform:translate(0,0);box-shadow:none
+  }
+
+  /* ===== 로딩 ===== */
   .loading{text-align:center;padding:40px 0}
   .loading-emoji{font-size:80px;display:inline-block;animation:bounce 1s infinite}
   @keyframes bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-15px)}}
@@ -58,6 +72,8 @@
   .dot:nth-child(2){background:#ffc8d1;animation-delay:.2s}
   .dot:nth-child(3){background:#ffd4a8;animation-delay:.4s}
   @keyframes pulse{0%,100%{transform:scale(1);opacity:.5}50%{transform:scale(1.3);opacity:1}}
+
+  /* ===== 결과 카드 ===== */
   .result-main,.challenge{background:#fff;border:3px solid #2a1a1a;border-radius:16px;padding:24px;margin-bottom:20px;box-shadow:6px 6px 0 #2a1a1a}
   .challenge{background:#fff8e1;box-shadow:6px 6px 0 #ff4d6d}
   .position-image{width:100%;height:280px;background:#fff;border:3px solid #2a1a1a;border-radius:12px;overflow:hidden;box-shadow:4px 4px 0 #2a1a1a;margin-bottom:18px}
@@ -72,10 +88,9 @@
   .challenge .reason-box{background:#fff;border-color:#2a1a1a}
   .reason-box strong{display:block;color:#ff4d6d;margin-bottom:6px;font-family:'Jua',sans-serif;font-size:14px;letter-spacing:.5px}
   .challenge .reason-box strong{color:#2a1a1a}
-  .detail-link{display:inline-block;background:#2a1a1a;color:#fff;padding:10px 18px;border-radius:10px;text-decoration:none;font-weight:bold;font-size:14px;font-family:'Jua',sans-serif;letter-spacing:1px;transition:all .15s}
-  .detail-link:hover{transform:translate(-2px,-2px);box-shadow:4px 4px 0 #ff4d6d}
+  .detail-link{display:inline-block;background:#2a1a1a;color:#fff;padding:10px 18px;border-radius:10px;text-decoration:none;font-weight:bold;font-size:14px;font-family:'Jua',sans-serif;letter-spacing:1px;transition:transform .15s,box-shadow .15s;transform:translate(0,0);box-shadow:none}
   .challenge .detail-link{background:#ff4d6d}
-  .challenge .detail-link:hover{box-shadow:4px 4px 0 #2a1a1a}
+
   @media(max-width:480px){
     h1{font-size:30px}.q-text{font-size:21px}.position-image{height:220px}
     .card-title-area h2{font-size:26px}.result-detail{font-size:15px}.reason-box{font-size:14px}
@@ -92,7 +107,7 @@
       <span class="badge">19+ ONLY</span>
       <h1>[섹슐랭가이드]<br>오늘의 체위 추천</h1>
       <p class="subtitle">파트너와 함께 답하면, 오늘 밤 메뉴를 추천해 드려요 🍽️</p>
-      <button class="btn" onclick="startQuiz()">만 19세 이상입니다 → 시작하기</button>
+      <button class="btn" id="startBtn" onclick="startQuiz()">만 19세 이상입니다 → 시작하기</button>
     </div>
   </div>
 
@@ -124,7 +139,7 @@
       <p class="subtitle">두 분의 답변을 바탕으로 골라봤어요.</p>
     </div>
     <div id="resultArea"></div>
-    <button class="btn" onclick="restart()">다시 추천받기 🔄</button>
+    <button class="btn" id="restartBtn" onclick="restart()">다시 추천받기 🔄</button>
   </div>
 
 </div>
@@ -222,7 +237,20 @@ const moodComments = {
 
 let currentQ = 0, answers = {};
 
+// ===== 화면 전환 시 모든 포커스/잔상 제거 =====
+function clearFocus(){
+  if(document.activeElement && document.activeElement.blur){
+    document.activeElement.blur();
+  }
+  // 모바일 Safari/Chrome의 hover sticky 문제 해결을 위한 강제 리플로우
+  document.body.style.pointerEvents = 'none';
+  requestAnimationFrame(()=>{
+    document.body.style.pointerEvents = '';
+  });
+}
+
 function startQuiz(){
+  clearFocus();
   document.getElementById('ageGate').classList.remove('active');
   document.getElementById('quiz').classList.add('active');
   renderQuestion();
@@ -247,7 +275,6 @@ function renderQuestion(){
 function selectOption(btn){
   document.querySelectorAll('.option').forEach(o=>{
     o.classList.remove('selected');
-    o.style.transform=''; o.style.boxShadow=''; o.style.background=''; o.style.color='';
     o.blur();
   });
   btn.classList.add('selected');
@@ -260,20 +287,17 @@ function updateNextButton(){
   const next = document.getElementById('nextBtn');
   next.disabled = !answers[questions[currentQ].key];
   next.textContent = currentQ === questions.length-1 ? '결과 보기 🎁' : '다음 →';
-  next.blur();
 }
 
 function nextQuestion(){
-  const btn = document.getElementById('nextBtn');
-  btn.blur();
   if(!answers[questions[currentQ].key]) return;
+  clearFocus();
   if(currentQ < questions.length-1){ currentQ++; renderQuestion(); }
   else { startLoading(); }
 }
 
 function prevQuestion(){
-  const btn = document.getElementById('prevBtn');
-  btn.blur();
+  clearFocus();
   if(currentQ > 0){ currentQ--; renderQuestion(); }
 }
 
@@ -338,6 +362,7 @@ function buildChallengeReason(pos){
 }
 
 function showResult(){
+  clearFocus();
   document.getElementById('loading').classList.remove('active');
   document.getElementById('result').classList.add('active');
   const scored = calculateScores();
@@ -371,6 +396,7 @@ function showResult(){
 }
 
 function restart(){
+  clearFocus();
   currentQ = 0; answers = {};
   document.getElementById('result').classList.remove('active');
   document.getElementById('loading').classList.remove('active');
